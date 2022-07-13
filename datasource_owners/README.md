@@ -166,9 +166,9 @@ your ontology. Currently the following categories are supported:
 * `Glass`
 * `Other`
 
-## A. Advanced - Create fuseki dataset
+## A. Advanced - Create Apache Jena Fuseki server dataset
 For more advanced users there is an `docker-compose-advanced.yaml` file that supports
-additional features. One of these features are the fuseki datasets.
+additional features. One of these features is running an Apache Jena Fuseki server dataset. What follows are instructions on how to set up such a dataset.
 
 ### A.0 Add credentials file to `docker-compose.yaml` and `docker-compose-advanced.yaml`
 Before starting to setup your fuseki dataset, make sure that you have added the path to your credentials file in the `docker-compose.yaml` file, as described in step [2.4](https://github.com/Hortivation/getting-started/edit/master/datasource_owners/README.md#24-edit-the-docker-composeyaml-file-to-include-the-path-to-your-credentials-file). Furthermore, also add the same path to the `docker-compose-advanced.yaml` file.
@@ -180,7 +180,7 @@ For persistent datasets (no data loss when bringing the server down) create a `.
 mkdir .fuseki
 ```
 
-### A.2 Bring up the Data source
+### A.2 Bring up the Data Source
 The command below can then be used to bring your Data Source live to the Hortivation Hub.
 
 **IMPORTANT**: This will run an Apache Jena Fuseki server on port 3030
@@ -224,7 +224,7 @@ Name of your dataset:
 ```
 After a couple minutes you can view your Fuseki Data Source [here](https://test.hortivation.sobolt.com/mijn-datasets) on the Hub Portal.
 
-### Updates
+## Updates
 On new releases and or updates please pull the latest docker images with the following command:
 
 ```bash
