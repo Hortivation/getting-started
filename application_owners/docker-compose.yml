@@ -1,0 +1,38 @@
+version: "3.9"
+services:
+  licence-server:
+    image: sobolt/hortivation-hub-licence-server:latest
+    container_name: hor-licence-server
+    volumes:
+      - "./licences.json:/data/licences.json"
+    restart: always
+    labels:
+     - "traefik.enable=true"
+     - "traefik.http.services.api.loadbalancer.server.port=80"
+     - "traefik.http.routers.api.rule=Host(`${HOSTNAME:-localhost}`)"
+     - "traefik.http.routers.api.entrypoints=websecure"
+     - "traefik.http.routers.api.tls.certresolver=lets-encrypt"
+
+  traefik:
+    image: docker.io/traefik:v2.6
+    container_name: hor-licence-server-proxy
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entryPoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entryPoints.web.http.redirections.entryPoint.scheme=https"
+      - "--entryPoints.websecure.address=:443"
+      - "--certificatesResolvers.lets-encrypt.acme.email="
+      - "--certificatesResolvers.lets-encrypt.acme.tlsChallenge=true"
+      - "--certificatesResolvers.lets-encrypt.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - letsencrypt:/letsencrypt
+
+volumes:
+  letsencrypt:

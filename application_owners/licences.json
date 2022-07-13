@@ -1,0 +1,32 @@
+[
+    {
+        "application_slug": "kis",
+        "organization_slug": "sobolt",
+        "start_date": "2022-01-01T00:00:00",
+        "end_date": "2023-01-01T00:00:00"
+    },
+    {
+        "application_slug": "casta",
+        "organization_slug": "sobolt",
+        "start_date": "2022-01-01T00:00:00",
+        "end_date": "2023-01-01T00:00:00"
+    },
+    {
+        "application_slug": "kis",
+        "organization_slug": "hortivation",
+        "start_date": "2022-01-01T00:00:00",
+        "end_date": "2023-01-01T00:00:00"
+    },
+    {
+        "application_slug": "casta",
+        "organization_slug": "hortivation",
+        "start_date": "2022-01-01T00:00:00",
+        "end_date": "2023-01-01T00:00:00"
+    },
+    {
+        "application_slug": "siom",
+        "organization_slug": "hortivation",
+        "start_date": "2022-01-01T00:00:00",
+        "end_date": "2023-01-01T00:00:00"
+    }
+]
