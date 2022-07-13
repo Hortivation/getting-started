@@ -25,7 +25,7 @@ The first step to serving your data on the Hortivation Hub is to login through t
 [Hortivation Hub portal](https://test.hortivation.sobolt.com/databronnen).
 
 ### Create your Data Source
-After logging in, create your Data Source by going to the [datasource create](test.hortivation.sobolt.com/databronnen/aanmaken) page.
+After logging in, create your Data Source by going to the [datasource create](https://test.hortivation.sobolt.com/databronnen/aanmaken) page.
 Provide a domain name to register your Data Source under on the Hortivation Hub. Successful registration will
 download a Data Source credential `.json` file. This file is used to enable communication with the rest of the Hub.
 
@@ -36,7 +36,7 @@ To run a data source, it is required that the following 4 elements are within yo
   are required to run the data source.
 * `datasets` directory which contains CGO-compliant data files.
 * `datasource_description.yaml` which contains the description of your dataset
-* Data Source credential .json file, which you just downloaded when creating the Data Source
+* Data Source credential .json file, which you just downloaded when creating the Data Source on the Hub Portal
 
 The easiest way to prepare the files is to:
 1. Clone the repository
@@ -56,9 +56,9 @@ cd getting-started/datasource_owners
 The template already comes with a small dataset, located here: `datasets/dataset1/data.ttl`. You can replace the `data.ttl` file with your own `.ttl` file.
 
 ### 2.3 Copy the credentials .json file to your working directory
-Place the `datasource-credentials-####.json` file in the `getting-started/datasource_owners` directory. For example using scp from your local machine:
+Place the `datasource-credentials-####.json` file in the `getting-started/datasource_owners` directory. For example you can use this scp command from your local machine:
 ```bash
-scp datasource-credentials-8b27f0b2-2993-4d15-a2d6-d6e99b23332f.json IPOFYOURSERVER:~/gettings-started/datasource_owners
+scp datasource-credentials-8b27f0b2-2993-4d15-a2d6-d6e99b23332f.json IP_OF_YOUR_SERVER:PATH_TO_YOUR_WORKING_DIRECTORY/getting-started/datasource_owners
 ```
 
 ### 2.4. Edit the `docker-compose.yaml` file to include the path to your credentials file
@@ -118,6 +118,8 @@ datasets the details are also available in these logs. You can view the logs usi
   docker-compose down
 ```
 
+> Important: Please refrain from using the `-v --remove-orphans` flags when bringing down your Data Source, as this also removes all certificates. When  bringing the Data Source back up after using these flags, new certificates have to be issued, which can only be done a couple of times before running into limits.
+
 ### View Swagger UI
 Access additional documentation regarding the endpoints provided by the Data Source
 through [http://YOUR-HOSTNAME/docs](https://my-datasource-domain/docs)
@@ -152,7 +154,7 @@ NOTE: The `datasets` directory is mounted in the server on the `/datasets` direc
   file. In this case the path should be `/datasets/dataset1/data.ttl`
 
 ### Data categories
-[Hortivation Hub](test.hortivation.sobolt.com) allows you to give access to certain parts of your dataset.
+[Hortivation Hub](https://test.hortivation.sobolt.com) allows you to give access to certain parts of your dataset.
 If you want to make use of this feature you have to add a
 `<https://www.tno.nl/agrifood/ontology/common-greenhouse-ontology#>:hasCategory` predicate to every subject in
 your ontology. Currently the following categories are supported:
@@ -168,6 +170,9 @@ your ontology. Currently the following categories are supported:
 For more advanced users there is an `docker-compose-advanced.yaml` file that supports
 additional features. One of these features are the fuseki datasets.
 
+### A.0 Add credentials file to `docker-compose.yaml` and `docker-compose-advanced.yaml`
+Before starting to setup your fuseki dataset, make sure that you have added the path to your credentials file in the `docker-compose.yaml` file, as described in step [2.4](https://github.com/Hortivation/getting-started/edit/master/datasource_owners/README.md#24-edit-the-docker-composeyaml-file-to-include-the-path-to-your-credentials-file). Furthermore, also add the same path to the `docker-compose-advanced.yaml` file.
+
 ### A.1 Create fuseki directory
 For persistent datasets (no data loss when bringing the server down) create a `.fuseki` directory:
 
@@ -175,7 +180,7 @@ For persistent datasets (no data loss when bringing the server down) create a `.
 mkdir .fuseki
 ```
 
-### A.2Bring up the Data source
+### A.2 Bring up the Data source
 The command below can then be used to bring your Data Source live to the Hortivation Hub.
 
 **IMPORTANT**: This will run an Apache Jena Fuseki server on port 3030
@@ -192,17 +197,32 @@ where
 * `ACME_EMAIL` is the email used for domain name registration. This email will receive notification if there
   are issues with hosting the datasource on your domain.
 
-### A.3 Log into 
-CONTINUE HERE
-Access the [Apache Jena Fuseki](https://jena.apache.org/documentation/fuseki2) server
-through [localhost:3030](http://localhost:3030) and login with `admin` and your
-password (`FUSEKI_PW`).
+### A.3 Log into the Apache Jena Fuseki server
+After bringing up the Data Source, you can access the [Apache Jena Fuseki](https://jena.apache.org/documentation/fuseki2) server
+through port-forwarding the Data Source to your local host:
+```bash
+ssh IP_OF_YOUR_SERVER -L 3030:127.0.0.1:3030
+```
+After port forwarding, you can access the server by navigating to [localhost:3030](http://localhost:3030) in your browser and logging in with `admin` and your password (`FUSEKI_PW`).
 
-### Create fuseki dataset
-In order to create a `fuseki` dataset you need to [login on the Apache Jena Fuseki server](http://localhost:3030)
-and create a dataset. Similar to the File storage example above you have to add a yaml object to the
-datasource description file. The only difference is that the `path` property should be the name of the
-dataset on the Apache Jena Fuseki server.
+### A.4 Create a fuseki dataset
+In the fuseki server, create a dataset on the [manage dataset](http://localhost:3030/manage.html) page. Copy the name of the dataset you just created.
+
+### A.5 Edit the `datasource_description.yaml` with a suitable description of your dataset
+```bash
+nano datasource_description.yaml
+```
+
+Fill in the details, make sure `type` is set to *fuseki* and the `path` corresponds to the name of the dataset you just created on the Apache Jena Fuseki server.
+```yaml
+Name of your dataset:
+  about: Describe your dataset
+  contact: Fill in contact details (including an email)
+  additional_info: Add additional information
+  type: fuseki
+  path: fuseki-dataset-name # path to your dataset file
+```
+After a couple minutes you can view your Fuseki Data Source [here](https://test.hortivation.sobolt.com/mijn-datasets) on the Hub Portal.
 
 ### Updates
 On new releases and or updates please pull the latest docker images with the following command:
