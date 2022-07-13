@@ -27,7 +27,7 @@ The first step to serving your data on the Hortivation Hub is to login through t
 ### Create your Data Source
 After logging in, create your Data Source by going to the [datasource create](test.hortivation.sobolt.com/databronnen/aanmaken) page.
 Provide a domain name to register your Data Source under on the Hortivation Hub. Successful registration will
-download a Data Source credential file. This file is used to enable communication with the rest of the Hub.
+download a Data Source credential `.json` file. This file is used to enable communication with the rest of the Hub.
 
 ## 2. Prepare the files
 To run a data source, it is required that the following 4 elements are within your working directory:
@@ -77,15 +77,22 @@ secrets:
 Save the file and close the editor.
 
 ### 2.5 Edit the `datasource_description.yaml` with a suitable description of your dataset
-CONTINUE FROM HERE
-
-Make sure to add the path to your credentials file to the `docker-compose.yaml` file:
-
 ```bash
-nano docker-compose.yaml
+nano datasource_description.yaml
 ```
+
+Fill in the details, making sure to put in the correct `type` (can be *file* or *fuseki*) and `path` (the path from the working directory to your `data.ttl` file
+```yaml
+Name of your dataset:
+  about: Describe your dataset
+  contact: Fill in contact details (including an email)
+  additional_info: Add additional information
+  type: file # don't edit this unless following the advanced steps
+  path: /datasets/dataset1/data.ttl # path to your dataset file
+```
+
 ## 3. Start up your Data Source
-The following command can then be used to bring your Data Source live to the Hortivation Hub:
+Once all files are in place, you can start you Data Source using the following command
 
 ```bash
 HOSTNAME=YOUR-HOSTNAME docker-compose up -d
@@ -93,26 +100,29 @@ HOSTNAME=YOUR-HOSTNAME docker-compose up -d
 
 where
 
-* `HOSTNAME` is the domain name where the datasource will be hosted.
+* `YOUR-HOSTNAME` is the domain name where the datasource will be hosted.
 
-It can take a couple of minutes before the dataset(s) are online.
+It can take a couple of minutes before the dataset(s) are online. After waiting, you can view your Data Source [here](https://test.hortivation.sobolt.com/mijn-datasets) on the Hub Portal. If the status is **Online**, you have succesfully setup your Data Source!
 
-You can also view logs of all running services with. If there are issues with setting up your datasource and/or
-datasets the details are also available in these logs.
+## Managing your Data Source
+### View logs
+You can view logs of all running services. If there are issues with setting up your datasource and/or
+datasets the details are also available in these logs. You can view the logs using:
 
 ```bash
   docker-compose logs -f
 ```
 
-Turn-off the Data Source with:
-
+#### Turn-off the Data Source with:
 ```bash
   docker-compose down
 ```
 
-## Functionality
+### View Swagger UI
 Access additional documentation regarding the endpoints provided by the Data Source
 through [http://YOUR-HOSTNAME/docs](https://my-datasource-domain/docs)
+
+## Addtional information
 
 ### Create datasets
 Currently two types of datasets are supported, these are `file` and `fuseki`. Creating and
@@ -130,7 +140,7 @@ with the following properties:
 
 Any changes to this .yaml file will also automatically be detected and updated online.
 
-#### File Storage
+### File Storage
 In order to create a `file` dataset you need to create a turtle (`.ttl`) file in the `datasets`
 directory. After that you have to add a yaml object to the datasource desciption file.
 
@@ -141,7 +151,7 @@ NOTE: The `datasets` directory is mounted in the server on the `/datasets` direc
 2. In the `datasets` directory I have another directory called `dataset1` and in that directory a `data.ttl`
   file. In this case the path should be `/datasets/dataset1/data.ttl`
 
-## Data categories
+### Data categories
 [Hortivation Hub](test.hortivation.sobolt.com) allows you to give access to certain parts of your dataset.
 If you want to make use of this feature you have to add a
 `<https://www.tno.nl/agrifood/ontology/common-greenhouse-ontology#>:hasCategory` predicate to every subject in
@@ -154,21 +164,24 @@ your ontology. Currently the following categories are supported:
 * `Glass`
 * `Other`
 
-## Advanced
+## A. Advanced - Create fuseki dataset
 For more advanced users there is an `docker-compose-advanced.yaml` file that supports
-additional features. One of these features are the fuseki datasets. For persistent
-datasets (no data loss when bringing the server down) create a `.fuseki` directory:
+additional features. One of these features are the fuseki datasets.
+
+### A.1 Create fuseki directory
+For persistent datasets (no data loss when bringing the server down) create a `.fuseki` directory:
 
 ```bash
 mkdir .fuseki
 ```
 
+### A.2Bring up the Data source
 The command below can then be used to bring your Data Source live to the Hortivation Hub.
 
 **IMPORTANT**: This will run an Apache Jena Fuseki server on port 3030
 
 ```bash
-HOSTNAME=YOUR-HOSTNAME FUSEKI_PW=YOUR_PASSWORD ACME_EMAIL=YOUR_ACME_EMAIL docker-compose up -d
+HOSTNAME=YOUR-HOSTNAME FUSEKI_PW=YOUR_PASSWORD ACME_EMAIL=YOUR_ACME_EMAIL docker-compose -f docker-compose-advanced.yaml up -d
 ```
 
 where
@@ -179,6 +192,8 @@ where
 * `ACME_EMAIL` is the email used for domain name registration. This email will receive notification if there
   are issues with hosting the datasource on your domain.
 
+### A.3 Log into 
+CONTINUE HERE
 Access the [Apache Jena Fuseki](https://jena.apache.org/documentation/fuseki2) server
 through [localhost:3030](http://localhost:3030) and login with `admin` and your
 password (`FUSEKI_PW`).
