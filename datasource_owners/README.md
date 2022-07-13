@@ -1,13 +1,12 @@
 # Getting started with the Hortivation Hub Data Source
 Hortivation Hub is a data exchange platform that aims to standardise communication
 between different parties in the Greenhouse Technology Sector. Dataset sharing across the
-platform is enabled by the Hortivation Hub Datasource, which is a server that is hosted
+platform is enabled by the Hortivation Hub Data Source, which is a server that is hosted
 by dataset owners. This guide provides all the documentation for getting started with
 sharing your data on the Hortivation Hub.
 
-## Requirements
-The Data Source server is hosted through Docker. For easy installation we recommend ubuntu or debian
-serverd. The following dependencies should be installed on your server:
+## 0. Requirements
+The Data Source server is hosted through Docker. For easy installation we recommend using a server that runs ubuntu or debian. The following dependencies should be installed on your server:
 
 * Docker (20.10.12) - installation documentation for ubuntu can be found
 [here](https://docs.docker.com/engine/install/ubuntu/)
@@ -21,42 +20,71 @@ For debian/ubuntu servers don't forget to add your user to the docker group
 sudo usermod -aG docker $USER
 ```
 
-## Hortivation Hub login
+## 1. Create your data source on the Hortivation Hub
 The first step to serving your data on the Hortivation Hub is to login through the
-[portal](test.hortivation.sobolt.com/databronnen).
+[Hortivation Hub portal](https://test.hortivation.sobolt.com/databronnen).
 
-## Create your Data Source
-To create your Data Source go to the [datasource create](test.hortivation.sobolt.com/databronnen/aanmaken) page.
+### Create your Data Source
+After logging in, create your Data Source by going to the [datasource create](test.hortivation.sobolt.com/databronnen/aanmaken) page.
 Provide a domain name to register your Data Source under on the Hortivation Hub. Successful registration will
-download a Data Source credential file needed to enable communication with the rest of the Hub.
+download a Data Source credential file. This file is used to enable communication with the rest of the Hub.
 
-## Start up your Data Source
-For start up ensure that these 4 elements are within your working directory:
+## 2. Prepare the files
+To run a data source, it is required that the following 4 elements are within your working directory:
 
 * `docker-compose.yaml` which contains the configuration of all services that
   are required to run the data source.
-* `datasets` directory in you working directory containing CGO-compliant data files.
-* `datasource_description.yaml` which contains the manual addition datasets descriptions
-* Data Source credential .json file, make sure to add the path to this credential file at
-  the bottom of the `docker-compose.yaml` file.
+* `datasets` directory which contains CGO-compliant data files.
+* `datasource_description.yaml` which contains the description of your dataset
+* Data Source credential .json file, which you just downloaded when creating the Data Source
 
-A template of these files can be downloaded [here](https://test.hortivation.sobolt.com/api/getting-started-datasource)
-or use the command below in your terminal. This template contains a dataset that already exists,
-please edit the `datasource_description.yaml` before running the datasource.
+The easiest way to prepare the files is to:
+1. Clone the repository
+2. Place your dataset in the datasets folder
+3. Copy the credentials .json file to your working directory
+4. Edit the `docker-compose.yaml` file to include the path to the credentials file
+5. Edit the `datasource_description.yaml` with a suitable description of your dataset
+
+### 2.1 Clone the repository and navigate to the datasource_owners directory
 
 ```bash
-sudo apt-get install unzip nano
-curl https://test.hortivation.sobolt.com/api/getting-started-datasource.zip --output getting-started-datasource.zip
-unzip getting-started-datasource.zip
-cd getting-started
+git clone https://github.com/Hortivation/getting-started.git
+cd getting-started/datasource_owners
 ```
+
+### 2.2 Place your dataset in the `datasets` folder
+The template already comes with a small dataset, located here: `datasets/dataset1/data.ttl`. You can replace the `data.ttl` file with your own `.ttl` file.
+
+### 2.3 Copy the credentials .json file to your working directory
+Place the `datasource-credentials-####.json` file in the `getting-started/datasource_owners` directory. For example using scp from your local machine:
+```bash
+scp datasource-credentials-8b27f0b2-2993-4d15-a2d6-d6e99b23332f.json IPOFYOURSERVER:~/gettings-started/datasource_owners
+```
+
+### 2.4. Edit the `docker-compose.yaml` file to include the path to your credentials file
+Copy the name of your `datasource-credentials-####.json` file and open the `docker-compose.yaml` in an editor (example uses nano).
+```bash
+nano docker-compose.yaml
+```
+
+Place the name of the `datasource-credentials-####.json` at the `ADD_FILEPATH_HERE` at the bottom.
+```yaml
+secrets:
+  credentials:
+    file: ./ADD_FILEPATH_HERE
+```
+
+Save the file and close the editor.
+
+### 2.5 Edit the `datasource_description.yaml` with a suitable description of your dataset
+CONTINUE FROM HERE
 
 Make sure to add the path to your credentials file to the `docker-compose.yaml` file:
 
 ```bash
 nano docker-compose.yaml
 ```
-
+## 3. Start up your Data Source
 The following command can then be used to bring your Data Source live to the Hortivation Hub:
 
 ```bash
