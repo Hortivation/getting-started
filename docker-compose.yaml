@@ -1,0 +1,65 @@
+version: "3.9"
+services:
+  api:
+    image: sobolt/hortivation-hub-datasource-api:latest
+    container_name: hor-datasource-api
+    restart: always
+    environment:
+      - HUB_PORTAL=https://test.hortivation.sobolt.com
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.api.loadbalancer.server.port=80"
+      - "traefik.http.routers.api.rule=Host(`${HOSTNAME:-localhost}`)"
+      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.tls.certresolver=lets-encrypt"
+    volumes:
+      - "file-data:/datasets"
+      - "dataset-descriptions:/descriptions"
+    secrets:
+      - credentials
+
+  traefik:
+    image: docker.io/traefik:v2.6
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entryPoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entryPoints.web.http.redirections.entryPoint.scheme=https"
+      - "--entryPoints.websecure.address=:443"
+      - "--certificatesResolvers.lets-encrypt.acme.email="
+      - "--certificatesResolvers.lets-encrypt.acme.tlsChallenge=true"
+      - "--certificatesResolvers.lets-encrypt.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - letsencrypt:/letsencrypt
+
+  discovery:
+    image: sobolt/hortivation-hub-datasource-discovery:latest
+    container_name: hor-datasource-discovery
+    environment:
+      - HUB_PORTAL=https://test.hortivation.sobolt.com
+    volumes:
+      - "file-data:/datasets"
+      - "dataset-descriptions:/descriptions"
+      - "${CONFIG_PATH:-./datasource_description.yaml}:/discovery/datasource_description.yaml"
+    secrets:
+      - credentials
+
+volumes:
+  letsencrypt:
+  dataset-descriptions:
+  file-data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./datasets
+
+secrets:
+  credentials:
+    file: ./ADD_FILEPATH_HERE

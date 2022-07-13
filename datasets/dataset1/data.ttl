@@ -1,0 +1,199 @@
+PREFIX : <http://www.myexample.com/>
+PREFIX cgo: <https://www.tno.nl/agrifood/ontology/common-greenhouse-ontology#>
+PREFIX sosa: <http://www.w3.org/ns/sosa/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX om: <http://www.ontology-of-units-of-measure.org/resource/om-2/>
+
+:mylocation
+    a cgo:Location ;
+    cgo:hasLongitude 1.0 ;
+    cgo:hasLatitude 1.0 ;
+    cgo:hasAltitude 0.0 ;
+    cgo:hasCategory 'Construction' .
+
+:columnheight
+    a om:Height ;
+    cgo:hasNumericalValue 10 ;
+    cgo:hasUnit 'meter' ;
+    cgo:hasCategory 'Construction' .
+
+:greenhousearea
+    a om:Area ;
+    cgo:hasNumericalValue 100 ;
+    cgo:hasUnit 'square meter' ;
+    cgo:hasCategory 'Construction' .
+
+:greenhousewidth
+    a om:Width ;
+    cgo:hasNumericalValue 15.0 ;
+    cgo:hasUnit 'meter' ;
+    cgo:hasCategory 'Construction' .
+
+:greenhouselength
+    a om:Length ;
+    cgo:hasNumericalValue 6.667 ;
+    cgo:hasUnit 'meter' ;
+    cgo:hasCategory 'Construction' .
+
+:mygreenhouse
+    a cgo:Greenhouse ;
+    cgo:hasColumnHeight :columnheight ;
+    cgo:hasArea :greenhousearea ;
+    cgo:hasWidth :greenhousewidth ;
+    cgo:hasLength :greenhouselength ;
+    cgo:hasOrientation 20.5 ;
+    cgo:hasLocation :mylocation ;
+    cgo:hasCategory 'Construction' .
+
+:myhortispotlocation
+    a cgo:HortispotLocation ;
+    cgo:hasLongitude 5.0 ;
+    cgo:hasLatitude 10.0 ;
+    cgo:hasAltitude 25.0 ;
+    cgo:hasHortispotLocationX 58.6 ;
+    cgo:hasHortispotLocationY 58.6 ;
+    cgo:hasHortispotLocationZ 2.5 ;
+    cgo:hasCategory 'Construction' .
+
+:gutterheight
+    a om:Height ;
+    cgo:hasNumericalValue 10.5 ;
+    cgo:hasUnit 'meter' ;
+    cgo:hasCategory 'Construction' .
+
+:mygutter
+    a cgo:Gutter ;
+    cgo:hasHeight :gutterheight ;
+    cgo:partOf :myGreenhouse ;
+    cgo:hasHortispotLocation :myhortispotlocation ;
+    cgo:hasCategory 'Construction' .
+
+:roofspanwidth
+    a om:Width ;
+    cgo:hasNumericalValue 60 ;
+    cgo:hasUnit 'meter';
+    cgo:hasCategory 'Construction' .
+
+:myfeatureofinterest
+    a cgo:Observation ;
+    cgo:hasCategory 'Other' .
+
+:myroof
+    a cgo:Roof ;
+    cgo:hasSpanWidth :roofspanwidth;
+    cgo:partOf :myGreenhouse ;
+    cgo:hasHortispotLocation :myhortispotlocation ;
+    cgo:hasCategory 'Construction' .
+
+:myfloor
+    a cgo:Floor ;
+    cgo:partOf :mygreenhouse ;
+    cgo:hasHortispotLocation :myhortispotlocation ;
+    cgo:hasCategory 'Construction' .
+
+:mywall1
+    a cgo:Wall ;
+    cgo:partOf :mygreenhouse ;
+    cgo:hasHortispotLocation :myhortispotlocation ;
+    cgo:hasCategory 'Construction' .
+
+:mywall2
+    a cgo:Wall ;
+    cgo:partOf :mygreenhouse ;
+    cgo:hasHortispotLocation :myhortispotlocation ;
+    cgo:hasCategory 'Construction' .
+
+:mywall3
+    a cgo:Wall ;
+    cgo:partOf :mygreenhouse ;
+    cgo:hasHortispotLocation :myhortispotlocation ;
+    cgo:hasCategory 'Construction' .
+
+:mywall4
+    a cgo:Wall ;
+    cgo:partOf :mygreenhouse ;
+    cgo:hasHortispotLocation :myhortispotlocation ;
+    cgo:hasCategory 'Construction' .
+
+:myglass
+    a cgo:DiffuseGlass ;
+    cgo:partOf :mygreenhouse ;
+    cgo:hasHortispotLocation :myhortispotlocation ;
+    cgo:hasCategory 'Glass' .
+
+:mysensor
+    a cgo:Sensor ;
+    cgo:partOf :mygreenhouse ;
+    cgo:hasCategory 'Construction' .
+
+:mytapwater
+    a cgo:Water ;
+    cgo:hasCategory 'Water' .
+
+:myrainwater
+    a cgo:Water ;
+    cgo:hasCategory 'Water' .
+
+:mywatersystem
+    a cgo:WaterSystem ;
+    cgo:partOf :mygreenhouse ;
+    cgo:hasPrimaryWaterSource :mytapwater ;
+    cgo:hasSecondaryWaterSource :myrainwater ;
+    cgo:hasCategory 'Water' .
+
+:mycrop
+    a cgo:Crop ;
+    cgo:hasPlantingDate "2001-10-26T21:32:52"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+    cgo:hasRemovalDate "2020-10-26T19:45:21"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+    cgo:partOf :mygreenhouse ;
+    cgo:hasCategory 'Crop' .
+
+:obervation1
+    a cgo:Observation ;
+    sosa:madeBySensor :mysensor ;
+    sosa:resultTime "2008-12-15T06:06:18"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+    cgo:hasCategory 'Heating' .
+
+:myplant1
+    a cgo:Plant ;
+    cgo:partOf :mycrop ;
+    cgo:hasCategory 'Crop' .
+
+:myplant2
+    a cgo:Plant ;
+    cgo:hasPlantingDate "2008-12-15T06:06:18"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+    cgo:hasRemovalDate "2022-12-15T07:29:60"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+    cgo:partOf :mycrop ;
+    cgo:hasCategory 'Crop' .
+
+:myheatingsystem
+    a cgo:centralHeatingSystem ;
+    cgo:partOf :mygreenhouse ;
+    cgo:hasCategory 'Construction' ;
+    cgo:hasCategory 'Heating'.
+
+:myheatingpipe
+    a cgo:heatingPipe ;
+    cgo:partOf :myheatingsystem ;
+    cgo:hasCategory 'Construction' ;
+    cgo:hasCategory 'Heating' .
+
+:mycoolingsystem
+    a cgo:coolingsystem ;
+    cgo:hasCoolingCapacity 22 ;
+    cgo:hasCategory 'Construction' ;
+    cgo:hasCategory 'Heating' .
+
+:myrain
+    a cgo:Rain ;
+    sosa:hasValue 100 ;
+    sosa:isFeatureOfInterestOf :myfeatureofinterest ;
+    cgo:hasCategory 'Other' .
+
+:myfertilitytrait
+    a cgo:fertilityTrait ;
+    cgo:hasCategory 'Other'  .
+
+:myqualitytrait
+    a cgo:qualityTrait ;
+    cgo:hasCategory 'Other'  .
