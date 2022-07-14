@@ -124,6 +124,21 @@ verified_payload = jwt.decode(
   issuer="hortivation-hub-portal-api",
   options={"require": ["iss", "sub", "aud", "exp", "iat", "scopes"]},
 )
+
+ALLOWED_SCOPES = [
+    "Dataset.ReadConstruction",
+    "Dataset.ReadWater",
+    "Dataset.ReadHeating",
+    "Dataset.ReadCrop",
+    "Dataset.ReadGlass",
+    "Dataset.ReadOther",
+    "Dataset.ReadAll",
+]
+for s in verified_payload['scopes']:
+    if s not in ALLOWED_SCOPES:
+        raise Exception(
+            detail=f"Forbidden: invalid scopes in access_token! scope '{s}' is not known!",
+        )
 ```
 
 ### Registering/creating datasets
