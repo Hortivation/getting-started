@@ -44,10 +44,8 @@ or use the commands below in
 your terminal:
 
 ```bash
-sudo apt-get install unzip nano
-curl https://test.hortivation.sobolt.com/api/getting-started-licence-server.zip --output getting-started-licence-server.zip
-unzip getting-started-licence-server.zip
-cd getting-started
+git clone https://github.com/Hortivation/getting-started.git
+cd getting-started/application_owners
 ```
 
 Please remove/edit the licence objects in the .json file:
@@ -80,3 +78,83 @@ Turn-off the licence server with:
 ```bash
   docker-compose down
 ```
+
+## Advanced - Hub Protocol
+More advanced applications might want to build upon our licence server and [datasource templates](../datasource_owners/README.md). 
+For those users the following sections explain how the Hub Protocol works. 
+
+### Access Tokens
+Communication to the Hub is secured using [JWT access tokens](https://jwt.io/introduction) that have to be added 
+to the Authorization Bearer header of every request. After creating a datasource in the portal you'll receive a 
+credentials file that contains the datasource UUID and a secret that are required to create and verify JWT access 
+tokens. We use the [python PyJWT library](https://pyjwt.readthedocs.io/en/stable/) to create and verify these tokens. 
+See example code below to create an access token that expires after 5 minutes:
+
+```python
+import jwt
+import datetime
+
+secret = '1234567890abcdefghijklmnopqrstuvwxyz' # Replace with your secret
+datasource_uuid = '3fa85f64-5717-4562-b3fc-2c963f66afa6' # Replace with your datasource uuid
+
+payload = {
+    "iss": f"hortivation-hub-datasource:{datasource_uuid}",
+    "sub": f"Datasource {datasource_uuid}",
+    "aud": "hortivation-hub-portal-api",
+    "iat": datetime.datetime.now(tz=datetime.timezone.utc),
+    "exp": datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(minutes=5)
+}
+
+access_token = jwt.encode(payload, secret, algorithm="HS256")
+```
+
+See example code below to verify an access token received from hortivation hub:
+
+```python
+access_token = "INCOMING-ACCESS-TOKEN" # Replace with access token from authorization bearer header.
+
+secret = '1234567890abcdefghijklmnopqrstuvwxyz' # Replace with your secret
+dataset_uuid = '3fa85f64-5717-4562-b3fc-2c963f66afa6' # Replace with dataset uuid that is being accessed
+
+verified_payload = jwt.decode(
+  access_token,
+  secret,
+  algorithms=["HS256"],
+  audience=f"hortivation-hub-dataset:{dataset_uuid}",
+  issuer="hortivation-hub-portal-api",
+  options={"require": ["iss", "sub", "aud", "exp", "iat", "scopes"]},
+)
+```
+
+### Registering/creating datasets
+Every datasource is responsible for registering datasets to the hub. Essentially this comes down to sending a POST
+request to the API of the Hub, [documentation of the endpoint that should be used can be found here](https://test.hortivation.sobolt.com/api/docs#/datasource/create_datasource_datasources_post)
+THis POST request will return a uuid of the dataset, among other information. 
+
+**Important**: when you send a post request don't forget to add the access token to the Authorization Bearer header
+
+### Datasource requirements - Service discovery
+Hortivation Hub will try to access your datasets every now and then in order to check if they are online and/or
+CGO-compliant (this process is called Service discovery). Hortivation hub expects every datasource to have the following
+endpoints:
+
+#### GET `/`
+Endpoint that returns a 200 response if the datasource is online. 
+
+**No access token authorization should be implemented on this endpoint**
+
+#### GET `/datasets/{dataset_id}?sparql_query="ANY-SPARQL-QUERY"`
+Endpoint that runs a SPARQL query on a dataset and returns the result of that query.
+
+**Important**: the `dataset_id` should correspond with the uuid received after registering a dataset!
+
+#### GET `/datasets/{dataset_id}/metadata`
+Endpoint that returns metadata of your dataset. The returned JSON object is expected to have the following properties:
+
+* `dataset_id` : UUID of the dataset
+* `name` : Name of the dataset
+* `about` : Description of your dataset
+* `contact` : Contact details
+* `additional_info` : Additional information
+
+**Important**: the `dataset_id` should correspond with the uuid received after registering a dataset!

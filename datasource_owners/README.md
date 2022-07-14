@@ -122,7 +122,7 @@ datasets the details are also available in these logs. You can view the logs usi
 
 ### View Swagger UI
 Access additional documentation regarding the endpoints provided by the Data Source
-through [http://YOUR-HOSTNAME/docs](https://my-datasource-domain/docs)
+through [https://YOUR-HOSTNAME/docs](https://my-datasource-domain/docs)
 
 ## Addtional information
 
@@ -206,7 +206,7 @@ ssh IP_OF_YOUR_SERVER -L 3030:127.0.0.1:3030
 After port forwarding, you can access the server by navigating to [localhost:3030](http://localhost:3030) in your browser and logging in with `admin` and your password (`FUSEKI_PW`).
 
 ### A.4 Create a fuseki dataset
-In the fuseki server, create a dataset on the [manage dataset](http://localhost:3030/manage.html) page. Copy the name of the dataset you just created.
+In the fuseki server, create a dataset on the [manage dataset](https://localhost:3030/manage.html) page. Copy the name of the dataset you just created.
 
 ### A.5 Edit the `datasource_description.yaml` with a suitable description of your dataset
 ```bash
