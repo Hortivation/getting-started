@@ -143,7 +143,7 @@ for s in verified_payload['scopes']:
 
 ### Registering/creating datasets
 Every datasource is responsible for registering datasets to the hub. Essentially this comes down to sending a POST
-request to the API of the Hub, [documentation of the endpoint that should be used can be found here](https://test.hortivation.sobolt.com/api/docs#/datasource/create_datasource_datasources_post)
+request to the API of the Hub, [documentation of the endpoint that should be used can be found here](https://test.hortivation.sobolt.com/api/docs#/datasource/create_dataset_datasets_post)
 THis POST request will return a uuid of the dataset, among other information. 
 
 **Important**: when you send a post request don't forget to add the access token to the Authorization Bearer header
