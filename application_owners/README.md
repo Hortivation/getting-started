@@ -134,10 +134,10 @@ ALLOWED_SCOPES = [
     "Dataset.ReadOther",
     "Dataset.ReadAll",
 ]
-for s in verified_payload['scopes']:
-    if s not in ALLOWED_SCOPES:
+for scope in verified_payload['scopes']:
+    if scope not in ALLOWED_SCOPES:
         raise Exception(
-            detail=f"Forbidden: invalid scopes in access_token! scope '{s}' is not known!",
+          f"Forbidden: invalid scopes in access_token! scope '{s}' is not known!",
         )
 ```
 
