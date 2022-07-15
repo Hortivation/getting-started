@@ -187,7 +187,8 @@ WHERE {
 }
 ```
 
-On the resulting graph you can execute the incoming SPARQL query.
+On the resulting graph you can execute the incoming SPARQL query. See more details about the different data categories
+[here](../datasource_owners/README.md#Data-categories).
 
 **Important**: the `dataset_id` should correspond with the uuid received after registering a dataset!
 
