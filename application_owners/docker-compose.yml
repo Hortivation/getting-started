@@ -5,6 +5,8 @@ services:
     container_name: hor-licence-server
     volumes:
       - "./licences.json:/data/licences.json"
+    environment:
+      - HUB_PORTAL=https://accept.hortivation.sobolt.com
     restart: always
     labels:
      - "traefik.enable=true"
