@@ -159,7 +159,35 @@ Endpoint that returns a 200 response if the datasource is online.
 **No access token authorization should be implemented on this endpoint**
 
 #### GET `/datasets/{dataset_id}?sparql_query="ANY-SPARQL-QUERY"`
-Endpoint that runs a SPARQL query on a dataset and returns the result of that query.
+Endpoint that runs a SPARQL query on a dataset and returns the result of that query as text. See some example
+SPARQL queries below:
+
+```
+SELECT * 
+WHERE { ?subject ?predicate ?object } 
+LIMIT 10
+
+CONSTRUCT { ?subject ?predicate ?object } 
+WHERE { ?subject ?predicate ?object . }
+```
+
+If you want to make use of authorisations for specific parts of your data you'll have to use the scopes in the 
+access token of the incoming request. We suggest run a construct query on the whole dataset based on the scopes 
+in the access token and executing the SPARQL query on the result of that construct query. For example if the access 
+token of the incoming request contains the `Dataset.ReadWater` scope you can filter on all water data with the 
+following CONSTRUCT query:
+
+```
+PREFIX cgo: <https://www.tno.nl/agrifood/ontology/common-greenhouse-ontology#>
+
+CONSTRUCT { ?subject ?predicate ?object } 
+WHERE { 
+  ?subject ?predicate ?object . 
+  FILTER EXISTS(?subject cgo:hasCategory "Water")
+}
+```
+
+On the resulting graph you can execute the incoming SPARQL query.
 
 **Important**: the `dataset_id` should correspond with the uuid received after registering a dataset!
 
