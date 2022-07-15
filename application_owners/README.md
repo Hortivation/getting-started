@@ -39,7 +39,7 @@ following properties:
 * `start_date` : a datetime string (for example: `2022-01-01T00:00:00`)
 * `end_date` : a datetime string (for example: `2023-01-01T00:00:00`)
 
-A template licence server can be downloaded [here](https://test.hortivation.sobolt.com/api/getting-started-licence-server.zip)
+A template licence server can be downloaded [here](https://accept.hortivation.sobolt.com/api/getting-started-licence-server.zip)
 or use the commands below in
 your terminal:
 
@@ -143,7 +143,7 @@ for scope in verified_payload['scopes']:
 
 ### Registering/creating datasets
 Every datasource is responsible for registering datasets to the hub. Essentially this comes down to sending a POST
-request to the API of the Hub, [documentation of the endpoint that should be used can be found here](https://test.hortivation.sobolt.com/api/docs#/datasource/create_dataset_datasets_post)
+request to the API of the Hub, [documentation of the endpoint that should be used can be found here](https://accept.hortivation.sobolt.com/api/docs#/datasource/create_dataset_datasets_post)
 THis POST request will return a uuid of the dataset, among other information. 
 
 **Important**: when you send a post request don't forget to add the access token to the Authorization Bearer header
