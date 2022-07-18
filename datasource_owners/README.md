@@ -173,6 +173,25 @@ additional features. One of these features is running an Apache Jena Fuseki serv
 ### A.0 Add credentials file to `docker-compose.yaml` and `docker-compose-advanced.yaml`
 Before starting to setup your fuseki dataset, make sure that you have added the path to your credentials file in the `docker-compose.yaml` file, as described in step [2.4](https://github.com/Hortivation/getting-started/edit/master/datasource_owners/README.md#24-edit-the-docker-composeyaml-file-to-include-the-path-to-your-credentials-file). Furthermore, also add the same path to the `docker-compose-advanced.yaml` file.
 
+#### A.0.0 Do you already have a Fuseki server?
+If you already have your own Apache Jene Fuseki server with datasets you can remove the `fuseki` service from the `docker-compose-advanced.yaml` file (lines 59-68). In this case you have 
+to provide additional environment variables, see the command below on how to bring the data source online:
+
+```bash
+HOSTNAME=YOUR-HOSTNAME FUSEKI_HOST=YOUR_FUSEKI_HOST FUSEKI_USER=YOUR_FUSEKI_USER FUSEKI_PW=YOUR_PASSWORD ACME_EMAIL=YOUR_ACME_EMAIL docker-compose -f docker-compose-advanced.yaml up -d
+```
+
+where
+
+* `HOSTNAME` is the domain name where the datasource will be hosted.
+* `FUSEKI_HOST` is the domain + port where the apache jena fuseki server is running.
+* `FUSEKI_USER` is the user name to the apache jena fuseki server. 
+* `FUSEKI_PW` is the user password to the apache jena fuseki server. 
+* `ACME_EMAIL` is the email used for domain name registration. This email will receive notification if there
+  are issues with hosting the datasource on your domain.
+
+You can now skip steps A.1, A.2 and A.3.
+
 ### A.1 Create fuseki directory
 For persistent datasets (no data loss when bringing the server down) create a `.fuseki` directory:
 
