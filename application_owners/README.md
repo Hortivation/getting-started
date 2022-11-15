@@ -202,3 +202,51 @@ Endpoint that returns metadata of your dataset. The returned JSON object is expe
 * `additional_info` : Additional information
 
 **Important**: the `dataset_id` should correspond with the uuid received after registering a dataset!
+
+
+## Advanced - Subscribe to updates
+Hortivation Hub uses [RabbitMQ](https://www.rabbitmq.com/) (an open-source message-broker) to exchange information between users, 
+applications and datasources about updates to datasets. The message broker employs a publish-subscribe pattern where authenticated 
+users can subscribe to messages on a certain topic. Users can subscribe to organizations, applications/datasources and to specific 
+datasets, each of these topics broadcast different kind of messages. See more details about the topics in their respective sections below.
+
+We provide a simple python class that can be used to integrate this publish-subscribe pattern in your application. See 
+[this folder](publish-and-subscribe). Make sure to install [the requirements](publish-and-subscribe/requirements.txt) 
+(python 3.4+): 
+
+```bash
+pip install -r requirements.txt
+```
+
+Login credentials to the RabbitMQ message broker can be found in your datasource credentials file. 
+
+### Topic - Organization
+Users can subscribe to updates of certain organizations. Messages published to this topic can be one of the following:
+
+* `New datasource: <DATASOURCE_UUID>`
+* `Deleted datasource: <DATASOURCE_UUID>`
+
+The topic that you have to subscribe to has the following pattern: `organization.<ORGANIZATION_SLUG>`
+
+### Topic - Application or Datasource
+Beside organization-wide updates it is alos possible to subscribe to datasources or applications. The following
+messages can be published to this topic:
+
+* `New dataset: <DATASET_UUID>`
+* `Deleted dataset: <DATASET_UUID>`
+
+The topic that you have to subscribe to has the following pattern: `datasource.<DATASOURCE_UUID>`
+
+### Topic - Dataset
+The third type of topic that Hortivation Hub supports are datasets. Messages published to this topic can be one of 
+the following:
+
+* `Dataset updated`
+
+The topic that you have to subscribe to has the following pattern: `dataset.<DATASET_UUID>`
+
+### Customize messages
+The Hortivation Hub portal and datasource templates implemented above messages, however it is possible to customize messages that are published.
+If you want to share other information with Hortivation users you can edit our python class accordingly. 
+
+RabbitMQ also supports other programming languages like Java, Ruby, PHP, C#, etc. You can find tutorials for those [here](https://www.rabbitmq.com/getstarted.html)
