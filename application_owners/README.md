@@ -229,7 +229,7 @@ Users can subscribe to updates of certain organizations. Messages published to t
 The topic that you have to subscribe to has the following pattern: `organization.<ORGANIZATION_SLUG>`
 
 ### Topic - Application or Datasource
-Beside organization-wide updates it is alos possible to subscribe to datasources or applications. The following
+Beside organization-wide updates it is also possible to subscribe to datasources or applications. The following
 messages can be published to this topic:
 
 * `New dataset: <DATASET_UUID>`
