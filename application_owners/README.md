@@ -210,15 +210,39 @@ applications and datasources about updates to datasets. The message broker emplo
 users can subscribe to messages on a certain topic. Users can subscribe to organizations, applications/datasources and to specific 
 datasets, each of these topics broadcast different kind of messages. See more details about the topics in their respective sections below.
 
-We provide a simple python class that can be used to integrate this publish-subscribe pattern in your application. See 
-[this folder](publish-and-subscribe). Make sure to install [the requirements](publish-and-subscribe/requirements.txt) 
-(python 3.4+): 
+We provide a template python class that can be used to integrate this publish-subscribe pattern in your application. See 
+[this folder](publish-and-subscribe). See instructions on how to use the template python class in the section below.
+
+### Using template python class
+Make sure to install [the requirements](publish-and-subscribe/requirements.txt) (python 3.4+): 
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Login credentials to the RabbitMQ message broker can be found in your datasource credentials file. 
+Login credentials to the RabbitMQ message broker can be found in your datasource credentials file. The following keys in the .json file
+are needed:
+
+* `rabbitmq_host` : Host of the RabbitMQ message broker
+* `rabbitmq_username` : Username of the account in the RabbitMQ message broker
+* `rabbitmq_password` : Password of the account in the RabbitMQ message broker
+
+Given that the requirements are installed and you have a username and password for the RabbitMQ broker see example code snippet below 
+where we subscribe to the sobolt organization.
+
+```python
+rabbitmq_host = "HOSTNAME" # Replace with rabbitmq_host from datasource credentials file
+rabbitmq_username = "USERNAME" # Replace with rabbitmq_username from datasource credentials file
+rabbitmq_password = "PASSWORD" # Replace with rabbitmq_password from datasource credentials file
+
+client = RMQClient(rabbitmq_username, rabbitmq_password, host=rabbitmq_host)
+
+# Subscribe to sobolt organization
+client.subscribe("organization.sobolt")
+
+# Publish message to my-organization
+client.publish("organization.my-organization", message="MY CUSTOM MESSAGE THAT I WOULD LIKE TO SHARE")
+```
 
 ### Topic - Organization
 Users can subscribe to updates of certain organizations. Messages published to this topic can be one of the following:
@@ -227,6 +251,8 @@ Users can subscribe to updates of certain organizations. Messages published to t
 * `Deleted datasource: <DATASOURCE_UUID>`
 
 The topic that you have to subscribe to has the following pattern: `organization.<ORGANIZATION_SLUG>`
+Organization slugs can be found on the details page in the dashboard of an organization. Please ask 
+a contact person at the organization if you would like to subscribe to another organization.
 
 ### Topic - Application or Datasource
 Beside organization-wide updates it is alos possible to subscribe to datasources or applications. The following
@@ -236,6 +262,9 @@ messages can be published to this topic:
 * `Deleted dataset: <DATASET_UUID>`
 
 The topic that you have to subscribe to has the following pattern: `datasource.<DATASOURCE_UUID>`
+The datasource UUID can be retrieved in multiple ways. Either from subscribing to a organization, there a message containing the 
+UUID will be published when the datasource is created. Or you can [fetch metadata of a dataset through the Portal API](https://accept.hortivation.sobolt.com/api/docs#/datasource/get_dataset_by_slug_datasets__dataset_slug__get), this endpoint returns a json object containing a `datasource` key that is the UUID of 
+the datasource where the dataset is hosted.
 
 ### Topic - Dataset
 The third type of topic that Hortivation Hub supports are datasets. Messages published to this topic can be one of 
@@ -244,6 +273,8 @@ the following:
 * `Dataset updated`
 
 The topic that you have to subscribe to has the following pattern: `dataset.<DATASET_UUID>`
+The dataset UUID can be retrieved by [fetching metadata of a dataset through the Portal API](https://accept.hortivation.sobolt.com/api/docs#/datasource/get_dataset_by_slug_datasets__dataset_slug__get), this endpoint returns a json object containing a `dataset_id` key that is the UUID of 
+the dataset.
 
 ### Customize messages
 The Hortivation Hub portal and datasource templates implemented above messages, however it is possible to customize messages that are published.
