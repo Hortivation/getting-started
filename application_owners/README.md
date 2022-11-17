@@ -255,7 +255,7 @@ Organization slugs can be found on the details page in the dashboard of an organ
 a contact person at the organization if you would like to subscribe to another organization.
 
 ### Topic - Application or Datasource
-Beside organization-wide updates it is alos possible to subscribe to datasources or applications. The following
+Beside organization-wide updates it is also possible to subscribe to datasources or applications. The following
 messages can be published to this topic:
 
 * `New dataset: <DATASET_UUID>`
