@@ -255,8 +255,8 @@ messages can be published to this topic:
 * `Deleted dataset: <DATASET_UUID>`
 
 The topic that you have to subscribe to has the following pattern: `datasource.<DATASOURCE_UUID>`
-The datasource UUID can be retrieved in multiple ways. Either from subscribing to a organization, there a message containing the 
-UUID will be published when the datasource is created. Or you can [fetch metadata of a dataset through the Portal API](https://accept.hortivation.sobolt.com/api/docs#/datasource/get_dataset_by_slug_datasets__dataset_slug__get), this endpoint returns a json object containing a `datasource` key that is the UUID of 
+The datasource UUID can be retrieved in multiple ways. Either through subscribing to a organization: once subscribed a message containing the 
+UUID will be published when the datasource is created. Alternatively, you can [fetch metadata of a dataset through the Portal API](https://accept.hortivation.sobolt.com/api/docs#/datasource/get_dataset_by_slug_datasets__dataset_slug__get), this endpoint returns a json object containing a `datasource` key that is the UUID of 
 the datasource where the dataset is hosted.
 
 ### Topic - Dataset
