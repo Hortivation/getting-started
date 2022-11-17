@@ -210,38 +210,31 @@ applications and datasources about updates to datasets. The message broker emplo
 users can subscribe to messages on a certain topic. Users can subscribe to organizations, applications/datasources and to specific 
 datasets, each of these topics broadcast different kind of messages. See more details about the topics in their respective sections below.
 
-We provide a template python class that can be used to integrate this publish-subscribe pattern in your application. See 
-[this folder](publish-and-subscribe). See instructions on how to use the template python class in the section below.
+We provide an example implementation in python that can be used to integrate this publish-subscribe pattern in your application. See 
+[this folder](publish-and-subscribe). See instructions on how to use the example python class in the section below. RabbitMQ also supports 
+other programming languages like Java, Ruby, PHP, C#, etc. You can find tutorials for those [here](https://www.rabbitmq.com/getstarted.html).
 
-### Using template python class
-Make sure to install [the requirements](publish-and-subscribe/requirements.txt) (python 3.4+): 
+### Example python implementation
+First open a terminal and make sure to install python 3.4+ (in a venv or miniconda) and install [the requirements](publish-and-subscribe/requirements.txt): 
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Login credentials to the RabbitMQ message broker can be found in your datasource credentials file. The following keys in the .json file
-are needed:
+Given that the requirements are installed you have to get (or create) a JWT access token to connect to the rabbitmq message broker.
+Either create a JWT access token with the instructions above about the Hub Protocol or use the [/retrieve_token](http://hub.hortivation.nl/api/docs#/authentication/retrieve_token_retrieve_token_get)
+endpoint. When you have this access token you can use the python script as follows:
 
-* `rabbitmq_host` : Host of the RabbitMQ message broker
-* `rabbitmq_username` : Username of the account in the RabbitMQ message broker
-* `rabbitmq_password` : Password of the account in the RabbitMQ message broker
+```bash
+python pubsub.py -t REPLACE-WITH-YOUR-ACCESS-TOKEN
+```
 
-Given that the requirements are installed and you have a username and password for the RabbitMQ broker see example code snippet below 
-where we subscribe to the sobolt organization.
+This should result in the following output in your terminal:
 
-```python
-rabbitmq_host = "HOSTNAME" # Replace with rabbitmq_host from datasource credentials file
-rabbitmq_username = "USERNAME" # Replace with rabbitmq_username from datasource credentials file
-rabbitmq_password = "PASSWORD" # Replace with rabbitmq_password from datasource credentials file
-
-client = RMQClient(rabbitmq_username, rabbitmq_password, host=rabbitmq_host)
-
-# Subscribe to sobolt organization
-client.subscribe("organization.sobolt")
-
-# Publish message to my-organization
-client.publish("organization.my-organization", message="MY CUSTOM MESSAGE THAT I WOULD LIKE TO SHARE")
+```
+	[organization.test-organization] received 'b'TEST MESSAGE 1''
+	[organization.test-organization] received 'b'TEST MESSAGE 2''
+	[organization.test-organization] received 'b'TEST MESSAGE 3''
 ```
 
 ### Topic - Organization
@@ -278,6 +271,4 @@ the dataset.
 
 ### Customize messages
 The Hortivation Hub portal and datasource templates implemented above messages, however it is possible to customize messages that are published.
-If you want to share other information with Hortivation users you can edit our python class accordingly. 
-
-RabbitMQ also supports other programming languages like Java, Ruby, PHP, C#, etc. You can find tutorials for those [here](https://www.rabbitmq.com/getstarted.html)
+You can publish any type of messages to organization, datasource and/or dataset topics.

@@ -1,15 +1,20 @@
-import abc
-import pika
+import argparse
+import os
+import pika  # type:ignore
+from pika.adapters.blocking_connection import BlockingChannel  # type:ignore
+import requests  # type:ignore
+import json
 import time
+import abc
 import traceback
 import threading
-from pika.adapters.blocking_connection import BlockingChannel
-from typing import Dict, Any
+from typing import List, Dict, Any
 
 
 #########################################################################################
 # RabbitMQ Subscriptions ################################################################
 #########################################################################################
+
 
 class RMQSubscription(threading.Thread):
     """Base class of a RabbitMQ subscription"""
@@ -138,10 +143,10 @@ class RMQSubscriptionPrint(RMQSubscription):
         print(f"\t[{self.topic}] received '{str(body)}'")
 
 
-
 #########################################################################################
 # RabbitMQ Client #######################################################################
 #########################################################################################
+
 
 class RMQClient:
     """RabbitMQ client object that is able to publish messages and handle multiple
@@ -177,10 +182,10 @@ class RMQClient:
         self.subscriptions: Dict[str, RMQSubscription] = {}
 
         # Setup connection to RMQ server
-        self._connection = self.create_connection()
+        self._connection = self._create_connection()
         self._channel = self._connection.channel()
 
-    def create_connection(self) -> pika.BlockingConnection:
+    def _create_connection(self) -> pika.BlockingConnection:
         """Create a new connection to the RabbitMQ message broker
 
         Returns
@@ -200,7 +205,7 @@ class RMQClient:
                 time.sleep(1)  # Wait 1 second before next retry
         assert False, f"Failed to connect to RabbitMQ!"
 
-    def publish(self, topic: str, message: str):
+    def publish(self, topic: str, message: str, jwt_access_token: str):
         """Publish a message to an topic
 
         Parameters
@@ -209,9 +214,16 @@ class RMQClient:
             Topic to publish a message to
         message : str
             Message that you want to send to all subscribers of this topic.
+        jwt_access_token : str
+            JWT access token
         """
-        self._channel.exchange_declare(exchange=topic, exchange_type="fanout")
-        self._channel.basic_publish(exchange=topic, routing_key="", body=message)
+        head = {"Authorization": f"Bearer {jwt_access_token}"}
+        response = requests.post(
+            f"http://{self.host}/api/rabbitmq-publish",
+            json={"topic": topic, "message": message},
+            headers=head,
+        )
+        response.raise_for_status()
 
     def subscribe(self, topic: str, action: str = "print"):
         """Subscribe to an topic
@@ -263,3 +275,55 @@ class RMQClient:
             self._connection.close()
         except Exception as e:
             error_message = traceback.format_exc()
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    # Required arguments:
+    parser.add_argument(
+        "-t",
+        "--access-token",
+        type=str,
+        metavar="TOKEN",
+        help="Hortivation Hub JWT access token",
+        required=True,
+    )
+    # Optional arguments
+    parser.add_argument(
+        "--portal-host",
+        default="hub.hortivation.nl",
+        type=str,
+        help="Hostname of the hortivation hub portal",
+    )
+
+    args = parser.parse_args()
+
+    head = {"Authorization": f"Bearer {args.access_token}"}
+    response = requests.get(
+        f"{args.portal_host}/api/rabbitmq-credentials",
+        headers=head,
+    )
+    response.raise_for_status()
+    rabbitmq_credentials = response.json()
+
+    client = RMQClient(
+        rabbitmq_credentials["username"], 
+        rabbitmq_credentials["password"], 
+        host=rabbitmq_credentials["host"]
+    )
+
+    # Subscribe to sobolt organization
+    client.subscribe("organization.test-organization")
+
+    time.sleep(2)
+    client.publish("organization.test-organization", "TEST MESSAGE 1", args.access_token)
+    time.sleep(2)
+    client.publish("organization.test-organization", "TEST MESSAGE 2", args.access_token)
+    time.sleep(2)
+    client.publish("organization.test-organization", "TEST MESSAGE 3", args.access_token)
+    time.sleep(2)
+
+    client.unsubscribe("organization.test-organization")
+
+    client.publish("organization.test-organization", "TEST MESSAGE 4", args.access_token)
+    time.sleep(2)
