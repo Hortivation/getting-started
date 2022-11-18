@@ -249,7 +249,7 @@ All users can subscribe to updates of certain organizations. Messages published 
 * `New datasource: <DATASOURCE_UUID>`
 * `Deleted datasource: <DATASOURCE_UUID>`
 
-Organization topics have the following pattern: `organization.<ORGANIZATION_SLUG>`
+Organization topic names have the following pattern: `organization.<ORGANIZATION_SLUG>`
 
 Organization slugs can be found on the details page in the dashboard of an organization. If you would like to subscribe to another organization, please ask
 a contact person within that organization about the slug.
@@ -261,7 +261,7 @@ messages can be published to this topic:
 * `New dataset: <DATASET_UUID>`
 * `Deleted dataset: <DATASET_UUID>`
 
-Datasource topics have the following pattern: `datasource.<DATASOURCE_UUID>`
+Datasource topic names have the following pattern: `datasource.<DATASOURCE_UUID>`
 
 The datasource UUID can be retrieved in multiple ways. Either through subscribing to a organization: once subscribed a message containing the 
 UUID will be published when the datasource is created. Alternatively, you can [fetch metadata of a dataset through the Portal API](https://accept.hortivation.sobolt.com/api/docs#/datasource/get_dataset_by_slug_datasets__dataset_slug__get), 
@@ -273,7 +273,7 @@ topics. Messages published to this topic can be one of the following:
 
 * `Dataset updated`
 
-Dataset topics have the following pattern: `dataset.<DATASET_UUID>`
+Dataset topic names have the following pattern: `dataset.<DATASET_UUID>`
 
 The dataset UUID can be retrieved by [fetching metadata of a dataset through the Portal API](https://accept.hortivation.sobolt.com/api/docs#/datasource/get_dataset_by_slug_datasets__dataset_slug__get), 
 this endpoint returns a json object containing a `dataset_id` key that is the UUID of the dataset.
