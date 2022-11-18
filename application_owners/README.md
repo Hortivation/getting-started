@@ -228,8 +228,8 @@ pip install -r requirements.txt
 ```
 
 Now we need a JWT access token to setup RabbitMQ subscriptions and publish messages. Either create a JWT access token with the instructions above 
-about the Hub Protocol or use the [/retrieve_token](http://hub.hortivation.nl/api/docs#/authentication/retrieve_token_retrieve_token_get) endpoint. 
-When you have this access token you can use the python script as follows:
+about the Hub Protocol or use the [/retrieve_token](http://hub.hortivation.nl/api/docs#/authentication/retrieve_token_retrieve_token_get) endpoint 
+(make sure that you are logged in before using this endpoint). When you have this access token you can use the python script as follows:
 
 ```bash
 python pubsub.py -t REPLACE-WITH-YOUR-ACCESS-TOKEN
@@ -249,9 +249,10 @@ All users can subscribe to updates of certain organizations. Messages published 
 * `New datasource: <DATASOURCE_UUID>`
 * `Deleted datasource: <DATASOURCE_UUID>`
 
-The topic that you have to subscribe to has the following pattern: `organization.<ORGANIZATION_SLUG>`
-Organization slugs can be found on the details page in the dashboard of an organization. Please ask 
-a contact person at the organization if you would like to subscribe to another organization.
+Organization topics have the following pattern: `organization.<ORGANIZATION_SLUG>`
+
+Organization slugs can be found on the details page in the dashboard of an organization. If you would like to subscribe to another organization, please ask
+a contact person within that organization about the slug.
 
 ### Topic - Application or Datasource
 Beside organization-wide updates it is also possible to subscribe to datasources or applications. The following
@@ -260,7 +261,7 @@ messages can be published to this topic:
 * `New dataset: <DATASET_UUID>`
 * `Deleted dataset: <DATASET_UUID>`
 
-The topic that you have to subscribe to has the following pattern: `datasource.<DATASOURCE_UUID>`
+Datasource topics have the following pattern: `datasource.<DATASOURCE_UUID>`
 
 The datasource UUID can be retrieved in multiple ways. Either through subscribing to a organization: once subscribed a message containing the 
 UUID will be published when the datasource is created. Alternatively, you can [fetch metadata of a dataset through the Portal API](https://accept.hortivation.sobolt.com/api/docs#/datasource/get_dataset_by_slug_datasets__dataset_slug__get), 
@@ -272,11 +273,11 @@ topics. Messages published to this topic can be one of the following:
 
 * `Dataset updated`
 
-The topic that you have to subscribe to has the following pattern: `dataset.<DATASET_UUID>`
+Dataset topics have the following pattern: `dataset.<DATASET_UUID>`
 
 The dataset UUID can be retrieved by [fetching metadata of a dataset through the Portal API](https://accept.hortivation.sobolt.com/api/docs#/datasource/get_dataset_by_slug_datasets__dataset_slug__get), 
 this endpoint returns a json object containing a `dataset_id` key that is the UUID of the dataset.
 
 ### Customize messages
 The Hortivation Hub portal and datasource templates implemented above messages, however it is possible to customize messages that are published.
-You can publish any type of messages to organization, datasource and/or dataset topics.
+You can publish any type of message to organization, datasource and/or dataset topics.
