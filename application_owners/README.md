@@ -210,20 +210,26 @@ applications and datasources about updates to datasets. The message broker emplo
 users can subscribe to messages on a certain topic. Users can subscribe to organizations, applications/datasources and to specific 
 datasets, each of these topics broadcast different kind of messages. See more details about the topics in their respective sections below.
 
+It is required to get rabbitmq credentials before you can subscribe to updates, the Hub Protocol is used for this. With a JWT access token
+you can get your rabbitmq credentials at the [/rabbitmq-credentials]() endpoint. This endpoint resets the rabbitmq credentials if you already
+created credentials with your account. Before subscribing to updates you have to call the [/rabbitmq-subscribe]() endpoint that sets up the 
+subscription for you. For publishing messages you have to use the [/rabbitmq-publish]() endpoint.
+
 We provide an example implementation in python that can be used to integrate this publish-subscribe pattern in your application. See 
 [this folder](publish-and-subscribe). See instructions on how to use the example python class in the section below. RabbitMQ also supports 
 other programming languages like Java, Ruby, PHP, C#, etc. You can find tutorials for those [here](https://www.rabbitmq.com/getstarted.html).
 
 ### Example python implementation
-First open a terminal and make sure to install python 3.4+ (in a venv or miniconda) and install [the requirements](publish-and-subscribe/requirements.txt): 
+First open a terminal and make sure to install python 3.4+ (use [venv](https://docs.python.org/3/tutorial/venv.html) or 
+[anaconda](https://docs.anaconda.com/anaconda/install/index.html)) and install [the requirements](publish-and-subscribe/requirements.txt): 
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Given that the requirements are installed you have to get (or create) a JWT access token to connect to the rabbitmq message broker.
-Either create a JWT access token with the instructions above about the Hub Protocol or use the [/retrieve_token](http://hub.hortivation.nl/api/docs#/authentication/retrieve_token_retrieve_token_get)
-endpoint. When you have this access token you can use the python script as follows:
+Now we need a JWT access token to setup RabbitMQ subscriptions and publish messages. Either create a JWT access token with the instructions above 
+about the Hub Protocol or use the [/retrieve_token](http://hub.hortivation.nl/api/docs#/authentication/retrieve_token_retrieve_token_get) endpoint. 
+When you have this access token you can use the python script as follows:
 
 ```bash
 python pubsub.py -t REPLACE-WITH-YOUR-ACCESS-TOKEN
@@ -232,13 +238,13 @@ python pubsub.py -t REPLACE-WITH-YOUR-ACCESS-TOKEN
 This should result in the following output in your terminal:
 
 ```
-	[organization.test-organization] received 'b'TEST MESSAGE 1''
-	[organization.test-organization] received 'b'TEST MESSAGE 2''
-	[organization.test-organization] received 'b'TEST MESSAGE 3''
+[organization.sobolt] received 'MESSAGE 1'
+[organization.sobolt] received 'MESSAGE 2'
+[organization.sobolt] received 'MESSAGE 3'
 ```
 
 ### Topic - Organization
-Users can subscribe to updates of certain organizations. Messages published to this topic can be one of the following:
+All users can subscribe to updates of certain organizations. Messages published to this topic can be one of the following:
 
 * `New datasource: <DATASOURCE_UUID>`
 * `Deleted datasource: <DATASOURCE_UUID>`
@@ -255,19 +261,21 @@ messages can be published to this topic:
 * `Deleted dataset: <DATASET_UUID>`
 
 The topic that you have to subscribe to has the following pattern: `datasource.<DATASOURCE_UUID>`
+
 The datasource UUID can be retrieved in multiple ways. Either through subscribing to a organization: once subscribed a message containing the 
-UUID will be published when the datasource is created. Alternatively, you can [fetch metadata of a dataset through the Portal API](https://accept.hortivation.sobolt.com/api/docs#/datasource/get_dataset_by_slug_datasets__dataset_slug__get), this endpoint returns a json object containing a `datasource` key that is the UUID of 
-the datasource where the dataset is hosted.
+UUID will be published when the datasource is created. Alternatively, you can [fetch metadata of a dataset through the Portal API](https://accept.hortivation.sobolt.com/api/docs#/datasource/get_dataset_by_slug_datasets__dataset_slug__get), 
+this endpoint returns a json object containing a `datasource` key that is the UUID of the datasource where the dataset is hosted.
 
 ### Topic - Dataset
-The third type of topic that Hortivation Hub supports are datasets. Messages published to this topic can be one of 
-the following:
+The third type of topic that Hortivation Hub supports are datasets, only authorized users will be able to subscribe and publish messages to dataset 
+topics. Messages published to this topic can be one of the following:
 
 * `Dataset updated`
 
 The topic that you have to subscribe to has the following pattern: `dataset.<DATASET_UUID>`
-The dataset UUID can be retrieved by [fetching metadata of a dataset through the Portal API](https://accept.hortivation.sobolt.com/api/docs#/datasource/get_dataset_by_slug_datasets__dataset_slug__get), this endpoint returns a json object containing a `dataset_id` key that is the UUID of 
-the dataset.
+
+The dataset UUID can be retrieved by [fetching metadata of a dataset through the Portal API](https://accept.hortivation.sobolt.com/api/docs#/datasource/get_dataset_by_slug_datasets__dataset_slug__get), 
+this endpoint returns a json object containing a `dataset_id` key that is the UUID of the dataset.
 
 ### Customize messages
 The Hortivation Hub portal and datasource templates implemented above messages, however it is possible to customize messages that are published.

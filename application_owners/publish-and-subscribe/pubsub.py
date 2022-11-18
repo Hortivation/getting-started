@@ -43,7 +43,7 @@ class RMQSubscription(threading.Thread):
         super().__init__()
         credentials = pika.PlainCredentials(username, password)
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host=host, credentials=credentials)
+            pika.ConnectionParameters(host=host, credentials=credentials, virtual_host=topic)
         )
         self.channel = self.connection.channel()
         self.topic = topic
@@ -140,7 +140,8 @@ class RMQSubscriptionPrint(RMQSubscription):
             - metadata edited
             - content edited
         """
-        print(f"\t[{self.topic}] received '{str(body)}'")
+        message = body.decode("utf-8")
+        print(f"[{self.topic}] received '{message}'")
 
 
 #########################################################################################
@@ -157,6 +158,7 @@ class RMQClient:
         self,
         username: str,
         password: str,
+        jwt_access_token: str,
         host: str = "localhost",
     ):
         """Initialize the RabbitMQ client object and setup connection
@@ -171,41 +173,21 @@ class RMQClient:
             Username of the RabbitMQ user
         password : str
             Password of the RabbitMQ user
+        jwt_access_token : str
+            Access token that is required to communicate with Hortivation Hub
+            and setup subscriptions.
         host : str, optional
             Host of the RabbitMQ message broker, by default "localhost"
         """
         self.username = username
         self.password = password
+        self.jwt_access_token = jwt_access_token
         self.host = host
 
         # Initialize subscriptions
         self.subscriptions: Dict[str, RMQSubscription] = {}
 
-        # Setup connection to RMQ server
-        self._connection = self._create_connection()
-        self._channel = self._connection.channel()
-
-    def _create_connection(self) -> pika.BlockingConnection:
-        """Create a new connection to the RabbitMQ message broker
-
-        Returns
-        -------
-        pika.BlockingConnection
-            Connection object to the RabbitMQ server
-        """
-        credentials = pika.PlainCredentials(self.username, self.password)
-        for _ in range(5):
-            try:
-                connection: pika.BlockingConnection = pika.BlockingConnection(
-                    pika.ConnectionParameters(host=self.host, credentials=credentials)
-                )
-                return connection
-            except Exception as e:
-                error_message = traceback.format_exc()
-                time.sleep(1)  # Wait 1 second before next retry
-        assert False, f"Failed to connect to RabbitMQ!"
-
-    def publish(self, topic: str, message: str, jwt_access_token: str):
+    def publish(self, topic: str, message: str):
         """Publish a message to an topic
 
         Parameters
@@ -214,10 +196,8 @@ class RMQClient:
             Topic to publish a message to
         message : str
             Message that you want to send to all subscribers of this topic.
-        jwt_access_token : str
-            JWT access token
         """
-        head = {"Authorization": f"Bearer {jwt_access_token}"}
+        head = {"Authorization": f"Bearer {self.jwt_access_token}"}
         response = requests.post(
             f"http://{self.host}/api/rabbitmq-publish",
             json={"topic": topic, "message": message},
@@ -241,6 +221,15 @@ class RMQClient:
                 f"Already subscribed to this topic, cannot have multiple subscriptions to the same topic!"
             )
             return
+        
+        # Setup subscription
+        head = {"Authorization": f"Bearer {self.jwt_access_token}"}
+        response = requests.post(
+            f"http://{self.host}/api/rabbitmq-subscribe",
+            json={"topic": topic},
+            headers=head,
+        )
+        response.raise_for_status()
 
         if action == "print":
             s = RMQSubscriptionPrint(self.username, self.password, self.host, topic)
@@ -272,7 +261,6 @@ class RMQClient:
         try:
             for topic in self.subscriptions:
                 self.unsubscribe(topic)
-            self._connection.close()
         except Exception as e:
             error_message = traceback.format_exc()
 
@@ -298,6 +286,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    # 1. Create (or reset) RabbitMQ credentials
     head = {"Authorization": f"Bearer {args.access_token}"}
     response = requests.get(
         f"{args.portal_host}/api/rabbitmq-credentials",
@@ -306,24 +295,25 @@ if __name__ == "__main__":
     response.raise_for_status()
     rabbitmq_credentials = response.json()
 
+    # 2. Setup RabbitMQ client and do tests
     client = RMQClient(
         rabbitmq_credentials["username"], 
         rabbitmq_credentials["password"], 
+        args.access_token,
         host=rabbitmq_credentials["host"]
     )
 
     # Subscribe to sobolt organization
-    client.subscribe("organization.test-organization")
+    client.subscribe("organization.sobolt")
 
-    time.sleep(2)
-    client.publish("organization.test-organization", "TEST MESSAGE 1", args.access_token)
-    time.sleep(2)
-    client.publish("organization.test-organization", "TEST MESSAGE 2", args.access_token)
-    time.sleep(2)
-    client.publish("organization.test-organization", "TEST MESSAGE 3", args.access_token)
-    time.sleep(2)
+    time.sleep(1)
+    client.publish("organization.sobolt", "MESSAGE 1")
+    time.sleep(1)
+    client.publish("organization.sobolt", "MESSAGE 2")
+    time.sleep(1)
+    client.publish("organization.sobolt", "MESSAGE 3")
+    time.sleep(1)
 
-    client.unsubscribe("organization.test-organization")
+    client.unsubscribe("organization.sobolt")
 
-    client.publish("organization.test-organization", "TEST MESSAGE 4", args.access_token)
-    time.sleep(2)
+    client.publish("organization.sobolt", "MESSAGE 4")
