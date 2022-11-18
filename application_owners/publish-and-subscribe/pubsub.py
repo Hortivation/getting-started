@@ -289,7 +289,7 @@ if __name__ == "__main__":
     # 1. Create (or reset) RabbitMQ credentials
     head = {"Authorization": f"Bearer {args.access_token}"}
     response = requests.get(
-        f"{args.portal_host}/api/rabbitmq-credentials",
+        f"http://{args.portal_host}/api/rabbitmq-credentials",
         headers=head,
     )
     response.raise_for_status()
