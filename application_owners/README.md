@@ -275,6 +275,14 @@ topics. Messages published to this topic can be one of the following:
 
 Dataset topic names have the following pattern: `dataset.<DATASET_UUID>`
 
+Beside the general topic it is also possible to subscribe to specific authorisations, see the list of those topic names below:
+
+* `dataset.<DATASET_UUID>.Construction`
+* `dataset.<DATASET_UUID>.Water`
+* `dataset.<DATASET_UUID>.Heating`
+* `dataset.<DATASET_UUID>.Crop`
+* `dataset.<DATASET_UUID>.Glass`
+
 The dataset UUID can be retrieved by [fetching metadata of a dataset through the Portal API](https://accept.hortivation.sobolt.com/api/docs#/datasource/get_dataset_by_slug_datasets__dataset_slug__get), 
 this endpoint returns a json object containing a `dataset_id` key that is the UUID of the dataset.
 
