@@ -6,7 +6,7 @@ services:
     volumes:
       - "./licences.json:/data/licences.json"
     environment:
-      - HUB_PORTAL=https://accept.hortivation.sobolt.com
+      - HUB_PORTAL=${HUB_PORTAL:-https://hub.hortivation.cloud}
     restart: always
     labels:
      - "traefik.enable=true"

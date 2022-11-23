@@ -279,7 +279,7 @@ if __name__ == "__main__":
     # Optional arguments
     parser.add_argument(
         "--portal-host",
-        default="hub.hortivation.nl",
+        default="hub.hortivation.cloud",
         type=str,
         help="Hostname of the hortivation hub portal",
     )

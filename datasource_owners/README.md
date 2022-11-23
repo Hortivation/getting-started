@@ -22,10 +22,10 @@ sudo usermod -aG docker $USER
 
 ## 1. Create your data source on the Hortivation Hub
 The first step to serving your data on the Hortivation Hub is to login through the
-[Hortivation Hub portal](https://accept.hortivation.sobolt.com/databronnen).
+[Hortivation Hub portal](https://hub.hortivation.cloud/databronnen).
 
 ### Create your Data Source
-After logging in, create your Data Source by going to the [datasource create](https://accept.hortivation.sobolt.com/databronnen/aanmaken) page.
+After logging in, create your Data Source by going to the [datasource create](https://hub.hortivation.cloud/databronnen/aanmaken) page.
 Provide a domain name to register your Data Source under on the Hortivation Hub. Successful registration will
 download a Data Source credential `.json` file. This file is used to enable communication with the rest of the Hub.
 
@@ -102,7 +102,7 @@ where
 
 * `YOUR-HOSTNAME` is the domain name where the datasource will be hosted.
 
-It can take a couple of minutes before the dataset(s) are online. After waiting, you can view your Data Source [here](https://accept.hortivation.sobolt.com/mijn-datasets) on the Hub Portal. If the status is **Online**, you have succesfully setup your Data Source!
+It can take a couple of minutes before the dataset(s) are online. After waiting, you can view your Data Source [here](https://hub.hortivation.cloud/mijn-datasets) on the Hub Portal. If the status is **Online**, you have succesfully setup your Data Source!
 
 ## Managing your Data Source
 ### View logs
@@ -154,7 +154,7 @@ NOTE: The `datasets` directory is mounted in the server on the `/datasets` direc
   file. In this case the path should be `/datasets/dataset1/data.ttl`
 
 ### Data categories
-[Hortivation Hub](https://accept.hortivation.sobolt.com) allows you to give access to certain parts of your dataset.
+[Hortivation Hub](https://hub.hortivation.cloud) allows you to give access to certain parts of your dataset.
 If you want to make use of this feature you have to add a
 `<https://www.tno.nl/agrifood/ontology/common-greenhouse-ontology#>:hasCategory` predicate to every subject in
 your ontology. Currently the following categories are supported:
@@ -241,7 +241,7 @@ Name of your dataset:
   type: fuseki
   path: fuseki-dataset-name # path to your dataset file
 ```
-After a couple minutes you can view your Fuseki Data Source [here](https://accept.hortivation.sobolt.com/mijn-datasets) on the Hub Portal.
+After a couple minutes you can view your Fuseki Data Source [here](https://hub.hortivation.cloud/mijn-datasets) on the Hub Portal.
 
 ## Updates
 On new releases and or updates please pull the latest docker images with the following command:
