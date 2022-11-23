@@ -5,7 +5,7 @@ services:
     container_name: hor-datasource-api
     restart: always
     environment:
-      - HUB_PORTAL=https://accept.hortivation.sobolt.com
+      - HUB_PORTAL=${HUB_PORTAL:-https://hub.hortivation.cloud}
       - FUSEKI_HOST=${FUSEKI_HOST:-http://fuseki:3030}
       - FUSEKI_USER=${FUSEKI_USER:-admin}
       - FUSEKI_PW=${FUSEKI_PW}
@@ -45,7 +45,7 @@ services:
     image: sobolt/hortivation-hub-datasource-discovery:latest
     container_name: hor-datasource-discovery
     environment:
-      - HUB_PORTAL=https://accept.hortivation.sobolt.com
+      - HUB_PORTAL=${HUB_PORTAL:-https://hub.hortivation.cloud}
       - FUSEKI_HOST=${FUSEKI_HOST:-http://fuseki:3030}
       - FUSEKI_USER=${FUSEKI_USER:-admin}
       - FUSEKI_PW=${FUSEKI_PW}
