@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   api:
-    image: sobolt/hortivation-hub-datasource-api:latest
+    image: sobolt/hortivation-hub-datasource-api:${VERSION_TAG:-latest}
     container_name: hor-datasource-api
     restart: always
     environment:
@@ -39,7 +39,7 @@ services:
       - letsencrypt:/letsencrypt
 
   discovery:
-    image: sobolt/hortivation-hub-datasource-discovery:latest
+    image: sobolt/hortivation-hub-datasource-discovery:${VERSION_TAG:-latest}
     container_name: hor-datasource-discovery
     environment:
       - HUB_PORTAL=${HUB_PORTAL:-https://hub.hortivation.cloud}
@@ -49,6 +49,20 @@ services:
       - "${CONFIG_PATH:-./datasource_description.yaml}:/discovery/datasource_description.yaml"
     secrets:
       - credentials
+
+  frontend:
+    image: sobolt/hortivation-hub-datasource-frontend:${VERSION_TAG:-latest}
+    container_name: hor-frontend
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.frontend.loadbalancer.server.port=80"
+      - "traefik.http.routers.frontend.rule=Host(`${HOSTNAME:-localhost}`) && PathPrefix(`/dashboard/`)"
+      - "traefik.http.routers.frontend.middlewares=frontend-stripprefix"
+      - "traefik.http.middlewares.frontend-stripprefix.stripprefix.prefixes=/dashboard"
+      - "traefik.http.routers.frontend.entrypoints=web"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.tls.certresolver=lets-encrypt"
 
 volumes:
   letsencrypt:

@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   licence-server:
-    image: sobolt/hortivation-hub-licence-server:latest
+    image: sobolt/hortivation-hub-licence-server:${VERSION_TAG:-latest}
     container_name: hor-licence-server
     volumes:
       - "./licences.json:/data/licences.json"
@@ -26,7 +26,7 @@ services:
       - "--entryPoints.web.http.redirections.entryPoint.to=websecure"
       - "--entryPoints.web.http.redirections.entryPoint.scheme=https"
       - "--entryPoints.websecure.address=:443"
-      - "--certificatesResolvers.lets-encrypt.acme.email="
+      - "--certificatesResolvers.lets-encrypt.acme.email=${ACME_EMAIL}"
       - "--certificatesResolvers.lets-encrypt.acme.tlsChallenge=true"
       - "--certificatesResolvers.lets-encrypt.acme.storage=/letsencrypt/acme.json"
     ports:
