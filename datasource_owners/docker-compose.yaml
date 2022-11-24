@@ -5,6 +5,7 @@ services:
     container_name: hor-datasource-api
     restart: always
     environment:
+      - HOSTNAME=${HOSTNAME}
       - HUB_PORTAL=${HUB_PORTAL:-https://hub.hortivation.cloud}
     labels:
       - "traefik.enable=true"

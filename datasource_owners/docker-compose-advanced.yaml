@@ -5,6 +5,7 @@ services:
     container_name: hor-datasource-api
     restart: always
     environment:
+      - HOSTNAME=${HOSTNAME}
       - HUB_PORTAL=${HUB_PORTAL:-https://hub.hortivation.cloud}
       - FUSEKI_HOST=${FUSEKI_HOST:-http://fuseki:3030}
       - FUSEKI_USER=${FUSEKI_USER:-admin}
