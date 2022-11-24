@@ -29,6 +29,21 @@ After logging in, create your Data Source by going to the [datasource create](ht
 Provide a domain name to register your Data Source under on the Hortivation Hub. Successful registration will
 download a Data Source credential `.json` file. This file is used to enable communication with the rest of the Hub.
 
+# Method-1 - Quick one step setup 
+
+## One step bash script to connect your Data Source
+Datasets on a Data Source can be connected with running the bash script (found in [new-datasource.sh](https://github.com/Hortivation/getting-started/datasource_owners/new_datasource.sh)). Download this file, and copy it, alongside the datasource-credentials-####.json on your Data Source server:
+```bash
+scp new_datasource.sh IP_OF_YOUR_SERVER:PATH_TO_YOUR_WORKING_DIRECTORY/
+scp YOUR_CREDENTIALS.json IP_OF_YOUR_SERVER:PATH_TO_YOUR_WORKING_DIRECTORY/
+```
+On the Data Source server run the bash script as follows (your dataset files must be in a folder. They must be of .ttl extension and CGO compliant):
+```bash
+sudo bash new_datasource.sh -d /PATH/TO/YOUR/DATASET/FOLDER -c /PATH/TO/YOUR_CREDENTIALS.json -v
+```
+
+# Method-2 (manual connection). 
+
 ## 2. Prepare the files
 To run a data source, it is required that the following 4 elements are within your working directory:
 
