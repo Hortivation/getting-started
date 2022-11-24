@@ -228,7 +228,7 @@ pip install -r requirements.txt
 ```
 
 Now we need a JWT access token to setup RabbitMQ subscriptions and publish messages. Either create a JWT access token with the instructions above 
-about the Hub Protocol or use the [/retrieve_token](http://hub.hortivation.nl/api/docs#/authentication/retrieve_token_retrieve_token_get) endpoint 
+about the Hub Protocol or use the [/retrieve_token](http://hub.hortivation.cloud/api/docs#/authentication/retrieve_token_retrieve_token_get) endpoint 
 (make sure that you are logged in before using this endpoint). When you have this access token you can use the python script as follows:
 
 ```bash
