@@ -50,19 +50,19 @@ services:
     secrets:
       - credentials
 
-  frontend:
-    image: sobolt/hortivation-hub-datasource-frontend:${VERSION_TAG:-latest}
-    container_name: hor-frontend
-    restart: always
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.frontend.loadbalancer.server.port=80"
-      - "traefik.http.routers.frontend.rule=Host(`${HOSTNAME:-localhost}`) && PathPrefix(`/dashboard/`)"
-      - "traefik.http.routers.frontend.middlewares=frontend-stripprefix"
-      - "traefik.http.middlewares.frontend-stripprefix.stripprefix.prefixes=/dashboard"
-      - "traefik.http.routers.frontend.entrypoints=web"
-      - "traefik.http.routers.frontend.entrypoints=websecure"
-      - "traefik.http.routers.frontend.tls.certresolver=lets-encrypt"
+  # frontend:
+  #   image: sobolt/hortivation-hub-datasource-frontend:${VERSION_TAG:-latest}
+  #   container_name: hor-frontend
+  #   restart: always
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.services.frontend.loadbalancer.server.port=80"
+  #     - "traefik.http.routers.frontend.rule=Host(`${HOSTNAME:-localhost}`) && PathPrefix(`/dashboard/`)"
+  #     - "traefik.http.routers.frontend.middlewares=frontend-stripprefix"
+  #     - "traefik.http.middlewares.frontend-stripprefix.stripprefix.prefixes=/dashboard"
+  #     - "traefik.http.routers.frontend.entrypoints=web"
+  #     - "traefik.http.routers.frontend.entrypoints=websecure"
+  #     - "traefik.http.routers.frontend.tls.certresolver=lets-encrypt"
 
 volumes:
   letsencrypt:
