@@ -211,9 +211,11 @@ users can subscribe to messages on a certain topic. Users can subscribe to organ
 datasets, each of these topics broadcast different kind of messages. See more details about the topics in their respective sections below.
 
 It is required to get rabbitmq credentials before you can subscribe to updates, the Hub Protocol is used for this. With a JWT access token
-you can get your rabbitmq credentials at the [/rabbitmq-credentials]() endpoint. This endpoint resets the rabbitmq credentials if you already
-created credentials with your account. Before subscribing to updates you have to call the [/rabbitmq-subscribe]() endpoint that sets up the 
-subscription for you. For publishing messages you have to use the [/rabbitmq-publish]() endpoint.
+you can get your rabbitmq credentials at the [/rabbitmq-credentials](https://hub.hortivation.cloud/api/docs#/rabbitmq/get_rabbitmq_credentials_rabbitmq_credentials_get) 
+endpoint. This endpoint resets the rabbitmq credentials if you already created credentials with your account. Before subscribing to updates you have to call the 
+[/rabbitmq-subscribe](https://hub.hortivation.cloud/api/docs#/rabbitmq/subscribe_to_rabbitmq_topic_rabbitmq_subscribe_post) endpoint that sets up the 
+subscription for you. For publishing messages you have to use the [/rabbitmq-publish](https://hub.hortivation.cloud/api/docs#/rabbitmq/publish_rabbitmq_message_rabbitmq_publish_post) 
+endpoint.
 
 We provide an example implementation in python that can be used to integrate this publish-subscribe pattern in your application. See 
 [this folder](publish-and-subscribe). See instructions on how to use the example python class in the section below. RabbitMQ also supports 
