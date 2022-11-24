@@ -38,18 +38,6 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - letsencrypt:/letsencrypt
 
-  # discovery:
-  #   image: sobolt/hortivation-hub-datasource-discovery:${VERSION_TAG:-latest}
-  #   container_name: hor-datasource-discovery
-  #   environment:
-  #     - HUB_PORTAL=${HUB_PORTAL:-https://hub.hortivation.cloud}
-  #   volumes:
-  #     - "file-data:/datasets"
-  #     - "dataset-descriptions:/descriptions"
-  #     - "${CONFIG_PATH:-./datasource_description.yaml}:/discovery/datasource_description.yaml"
-  #   secrets:
-  #     - credentials
-
   frontend:
     image: sobolt/hortivation-hub-datasource-frontend:${VERSION_TAG:-latest}
     container_name: hor-frontend
