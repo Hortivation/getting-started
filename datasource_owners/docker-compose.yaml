@@ -76,4 +76,4 @@ volumes:
 
 secrets:
   credentials:
-    file: ./ADD_FILEPATH_HERE
+    file: ${CREDENTIALS}
