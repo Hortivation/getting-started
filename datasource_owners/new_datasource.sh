@@ -80,9 +80,9 @@ fi
 ## 1. INSTALL DEPENDENCIES ##
 
 # 1.1 docker
-sudo apt-get remove docker docker-engine docker.io containerd runc
-sudo apt-get update
-sudo apt-get install \
+sudo dpkg --remove docker docker-engine docker.io containerd runc
+sudo apt-get -y update
+sudo apt-get -y install \
     ca-certificates \
     curl \
     gnupg \
@@ -95,9 +95,11 @@ echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-sudo apt-get update
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+sudo apt-get -y update
+sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 sudo usermod -aG docker $USER
+sudo systemctl enable docker
+
 docker_version=$(docker --version | cut -d " " -f 3 | cut -d "," -f 1)
 if [ verbose == 'true' ]; then
     echo "docker ${docker_version} installed"
@@ -126,7 +128,7 @@ cd getting-started/datasource_owners
 rm datasets/dataset1/data.ttl
 cp -r ${DATASOURCE_FOLDER}/* datasets/dataset1/
 # check data file extension
-for file in datasets/dataset1/; do
+for file in datasets/dataset1/*; do
     if [[ "${file: -4}" == "*.ttl" ]];
     then
         echo "File: ${file} does not have .ttl extension."
@@ -172,7 +174,7 @@ sleep 0.5
 
 # 2.4 update the description file based on above input
 NAME=$dataset_name DESC=$dataset_description INFO=$dataset_add_info \
-    PERSON_CONTACT="${contact_person}, ${contact_email}" TYPE=$file_type FPATH=$file \
+    PERSON_CONTACT="${contact_person}, ${contact_email}" TYPE=$file_type FPATH="/${file}" \
     yq -n ' 
         .[env(NAME)].about = env(DESC) |
         .[env(NAME)].additional_info = env(INFO) |
