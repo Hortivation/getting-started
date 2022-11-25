@@ -130,7 +130,7 @@ else
 fi
 
 # 2.2 Remove template data & copy real datasets to the required repository folder
-rm datasets/dataset1/data.ttl
+rm -f datasets/dataset1/data.ttl
 cp -r ${DATASOURCE_FOLDER}/* datasets/dataset1/
 # check data file extension
 for file in datasets/dataset1/*; do
@@ -170,6 +170,9 @@ if [[ "${file_type}" == "fuseki" ]];
 then
     echo "This script does not support File-type - fuseki. Look up the Advanced section to connect Apache Jena Fuseki server datasets"
     exit 1
+elif [[ "${file_type}" == "file" ]];
+then
+    continue;
 else
     echo "Invalid File-type: ${file_type}. Only 'file' and 'fuseki' keywords are allowed!"
     exit 1    
