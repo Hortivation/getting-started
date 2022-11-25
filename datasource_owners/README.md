@@ -39,7 +39,7 @@ scp YOUR_CREDENTIALS.json IP_OF_YOUR_SERVER:PATH_TO_YOUR_WORKING_DIRECTORY/
 ```
 On the Data Source server run the bash script as follows (your dataset files must be in a folder. They must be of .ttl extension and CGO compliant):
 ```bash
-sudo bash new_datasource.sh -d /PATH/TO/YOUR/DATASET/FOLDER -c /PATH/TO/YOUR_CREDENTIALS.json -v
+sudo HOSTNAME=YOUR-HOSTNAME bash new_datasource.sh -d /PATH/TO/YOUR/DATASET/FOLDER -c /PATH/TO/YOUR_CREDENTIALS.json -v
 ```
 
 ## 2.2 Custom - connect manually from this repository. 
