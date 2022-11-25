@@ -120,9 +120,14 @@ snap install yq
 ## 2. PREPARE  ##
 
 # 2.1  Clone template repository
-git -C repo pull || git clone https://github.com/Hortivation/getting-started.git
-# set working directory
-cd getting-started/datasource_owners
+if cd getting-started/datasource_owners;
+then
+    git pull;
+else
+    git clone https://github.com/Hortivation/getting-started.git;
+    # set working directory
+    cd getting-started/datasource_owners;
+fi
 
 # 2.2 Remove template data & copy real datasets to the required repository folder
 rm datasets/dataset1/data.ttl
