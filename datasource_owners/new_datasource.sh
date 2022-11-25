@@ -172,7 +172,7 @@ then
     exit 1
 elif [[ "${file_type}" == "file" ]];
 then
-    continue;
+    echo "file type: ${file_type}";
 else
     echo "Invalid File-type: ${file_type}. Only 'file' and 'fuseki' keywords are allowed!"
     exit 1    
