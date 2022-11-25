@@ -21,11 +21,15 @@ sudo usermod -aG docker $USER
 ```
 
 ## 1. Create your data source on the Hortivation Hub
-The first step to serving your data on the Hortivation Hub is to login through the
+
+## 1.1 The first step to serving your data on the Hortivation Hub is to login through the
 [Hortivation Hub portal](https://hub.hortivation.cloud/databronnen).
 
 ### Create your Data Source
 After logging in, create your Data Source by going to the [datasource create](https://hub.hortivation.cloud/databronnen/aanmaken) page.
+
+If you want to automatically receive a domain name from Hortivation Hub, leave the *Hostnaam* field empty. Your datasource will then be reachable through `ORGANIZATION_NAME.DATASOURCE_NAME.hortivation.cloud`. If you want to use your own domain name, type it into the *Hostnaam* field.
+
 Provide a domain name to register your Data Source under on the Hortivation Hub. Successful registration will
 download a Data Source credential `.json` file. This file is used to enable communication with the rest of the Hub.
 
@@ -90,8 +94,22 @@ Name of your dataset:
   type: file # don't edit this unless following the advanced steps
   path: /datasets/dataset1/data.ttl # path to your dataset file
 ```
+## 3. Register your IP-address.
+> Only perform this step if you want to receive a domain name from Hortivation and left the *Hostnaam* field empty during registration on the hub.
 
-## 3. Start up your Data Source
+First, get the public IP of your VM.
+```bash
+PUBLIC_IP=$(dig +short myip.opendns.com @resolver1.opendns.com)
+
+```
+Then, run the following command, placing the path of your `datasource-credentials-####.json` file into the command:
+```bash
+docker run --rm -v PATH_TO_YOUR_WORKING_DIRECTORY/getting-started/datasource_owners/datasource-credentials-####.json:/run/secrets/credentials/datasource-credentials.json -v /root/getting-started/datasource_owners:/data -e HUB_PORTAL=https://test.hortivation.sobolt.com sobolt/hortivation-hub-datasource-init:test python main.py --ip ${PUBLIC_IP} -o /data/.env
+```
+After the command is executed, your ip is registered with Hortivation Hub and you can proceed to starting up your Data Source.
+
+## 4. Start up your Data Source
+
 Once all files are in place, you can start you Data Source using the following command
 
 ```bash
