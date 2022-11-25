@@ -1,6 +1,6 @@
 #!/bin/bash
 
-## HORTIVATION HUB DATA SOURCE CREATION
+# HORTIVATION HUB DATA SOURCE CREATION
 #
 # Copyright 2022 Sobolt B.V.
 #
@@ -13,14 +13,14 @@
 # 
 # This script allows easy sharing of Greenhouse dataset(s). It connects your data source server
 # with the hortivation hub portal, where the authorised personnel and organisations can access 
-# components of entire shared datasets within this data source.
+# components or the entire shared datasets within this source.
 # 
 # REQUIREMENTS: 
 #  - Debian based x86/64 machine
 #  - HTTP/HTTPS traffic allowed
 #  - CGO compliant Dataset files accessible to the script (.ttl)
 #  - Data Source credential .json file (provided after registering the data source on the hub portal)
-#  - 
+# 
 # 
 # USAGE:
 # On data source server, connect the datasets with the portal as follows:
@@ -161,6 +161,14 @@ echo "Contact email: ${contact_email}"
 sleep 0.5
 read -p "File type ('file' or 'fuseki'). Defaults to 'file'!`echo $'\n> '`" file_type
 echo "File type: ${file_type}"
+if [[ "${file_type}" == "fuseki" ]];
+then
+    echo "This script does not support File-type - fuseki. Look up the Advanced section to connect Apache Jena Fuseki server datasets"
+    exit 1
+else
+    echo "Invalid File-type: ${file_type}. Only 'file' and 'fuseki' keywords are allowed!"
+    exit 1    
+fi
 sleep 0.5
 read -p "Dataset to be shared: ${file}. Is this correct? [y/n]! " path_correct
 case $path_correct in 
