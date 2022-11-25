@@ -29,7 +29,22 @@ After logging in, create your Data Source by going to the [datasource create](ht
 Provide a domain name to register your Data Source under on the Hortivation Hub. Successful registration will
 download a Data Source credential `.json` file. This file is used to enable communication with the rest of the Hub.
 
-## 2. Prepare the files
+## 2.1 - Quick one step setup 
+
+## One step bash script to connect your Data Source
+Datasets on a Data Source can be connected with running the bash script (found in [new-datasource.sh](https://github.com/Hortivation/getting-started/datasource_owners/new_datasource.sh)). Download this file, and copy it, alongside the datasource-credentials-####.json on your Data Source server:
+```bash
+scp new_datasource.sh IP_OF_YOUR_SERVER:PATH_TO_YOUR_WORKING_DIRECTORY/
+scp YOUR_CREDENTIALS.json IP_OF_YOUR_SERVER:PATH_TO_YOUR_WORKING_DIRECTORY/
+```
+On the Data Source server run the bash script as follows (your dataset files must be in a folder. They must be of .ttl extension and CGO compliant):
+```bash
+sudo bash new_datasource.sh -d /PATH/TO/YOUR/DATASET/FOLDER -c /PATH/TO/YOUR_CREDENTIALS.json -v
+```
+
+## 2.2 Custom - connect manually from this repository. 
+
+## 2.2.1 Prepare the files
 To run a data source, it is required that the following 4 elements are within your working directory:
 
 * `docker-compose.yaml` which contains the configuration of all services that
@@ -45,23 +60,23 @@ The easiest way to prepare the files is to:
 4. Edit the `docker-compose.yaml` file to include the path to the credentials file
 5. Edit the `datasource_description.yaml` with a suitable description of your dataset
 
-### 2.1 Clone the repository and navigate to the datasource_owners directory
+### a.) Clone the repository and navigate to the datasource_owners directory
 
 ```bash
 git clone https://github.com/Hortivation/getting-started.git
 cd getting-started/datasource_owners
 ```
 
-### 2.2 Place your dataset in the `datasets` folder
+### b.) Place your dataset in the `datasets` folder
 The template already comes with a small dataset, located here: `datasets/dataset1/data.ttl`. You can replace the `data.ttl` file with your own `.ttl` file.
 
-### 2.3 Copy the credentials .json file to your working directory
+### c.) Copy the credentials .json file to your working directory
 Place the `datasource-credentials-####.json` file in the `getting-started/datasource_owners` directory. For example you can use this scp command from your local machine:
 ```bash
 scp datasource-credentials-8b27f0b2-2993-4d15-a2d6-d6e99b23332f.json IP_OF_YOUR_SERVER:PATH_TO_YOUR_WORKING_DIRECTORY/getting-started/datasource_owners
 ```
 
-### 2.4. Edit the `docker-compose.yaml` file to include the path to your credentials file
+### d.) Edit the `docker-compose.yaml` file to include the path to your credentials file
 Copy the name of your `datasource-credentials-####.json` file and open the `docker-compose.yaml` in an editor (example uses nano).
 ```bash
 nano docker-compose.yaml
@@ -76,7 +91,7 @@ secrets:
 
 Save the file and close the editor.
 
-### 2.5 Edit the `datasource_description.yaml` with a suitable description of your dataset
+### e.) Edit the `datasource_description.yaml` with a suitable description of your dataset
 ```bash
 nano datasource_description.yaml
 ```
@@ -91,7 +106,7 @@ Name of your dataset:
   path: /datasets/dataset1/data.ttl # path to your dataset file
 ```
 
-## 3. Start up your Data Source
+## 2.2.2 Start up your Data Source
 Once all files are in place, you can start you Data Source using the following command
 
 ```bash

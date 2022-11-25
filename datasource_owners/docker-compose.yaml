@@ -47,6 +47,7 @@ services:
       - "file-data:/datasets"
       - "dataset-descriptions:/descriptions"
       - "${CONFIG_PATH:-./datasource_description.yaml}:/discovery/datasource_description.yaml"
+      - "${CONFIG_PATH:-./datasource_description.yaml}:/descriptions/datasource_description.yaml"
     secrets:
       - credentials
 
@@ -76,4 +77,4 @@ volumes:
 
 secrets:
   credentials:
-    file: ./ADD_FILEPATH_HERE
+    file: ${CREDENTIALS}
