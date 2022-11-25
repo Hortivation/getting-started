@@ -190,7 +190,7 @@ Before starting to setup your fuseki dataset, make sure that you have added the 
 
 #### A.0.0 Do you already have a Fuseki server?
 If you already have your own Apache Jene Fuseki server with datasets you can remove the `fuseki` service from the `docker-compose-advanced.yaml` file (lines 59-68). In this case you have 
-to provide additional environment variables, see the command below on how to bring the data source online:
+to provide additional environment variables, see the command below on how to bring the data source online (provide absolute paths to the data folder and the JSON file):
 
 ```bash
 HOSTNAME=YOUR-HOSTNAME FUSEKI_HOST=YOUR_FUSEKI_HOST FUSEKI_USER=YOUR_FUSEKI_USER FUSEKI_PW=YOUR_PASSWORD ACME_EMAIL=YOUR_ACME_EMAIL docker-compose -f docker-compose-advanced.yaml up -d
