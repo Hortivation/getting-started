@@ -284,6 +284,8 @@ Beside the general topic it is also possible to subscribe to specific authorisat
 * `dataset.<DATASET_UUID>.Heating`
 * `dataset.<DATASET_UUID>.Crop`
 * `dataset.<DATASET_UUID>.Glass`
+* `dataset.<DATASET_UUID>.Roof`
+* `dataset.<DATASET_UUID>.VenloGreenhouse`
 
 The dataset UUID can be retrieved by [fetching metadata of a dataset through the Portal API](https://hub.hortivation.cloud/api/docs#/datasource/get_dataset_by_slug_datasets__dataset_slug__get), 
 this endpoint returns a json object containing a `dataset_id` key that is the UUID of the dataset.
