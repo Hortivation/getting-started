@@ -27,11 +27,20 @@ sudo usermod -aG docker $USER
 
 ### Create your Data Source
 After logging in, create your Data Source by going to the [datasource create](https://hub.hortivation.cloud/databronnen/aanmaken) page.
+After creating a datasource in the Hortivation Hub Portal you'll receive a Data Source credential `.json` file. This file is used to enable communication with the rest of the Hub.
 
-If you want to automatically receive a domain name from Hortivation Hub, leave the *Hostnaam* field empty. Your datasource will then be reachable through `ORGANIZATION_NAME.DATASOURCE_NAME.hortivation.cloud`. If you want to use your own domain name, type it into the *Hostnaam* field.
+If you want to use your own domain name, type it into the *Hostnaam* field. It is also possible to receive a domain name from Hortivation Hub, if you want that leave the *Hostnaam* field empty and register
+the IP address of your datasource server with the commands below. Your datasource will then be reachable at `ORGANIZATION_NAME.DATASOURCE_NAME.hortivation.cloud`.
 
-Provide a domain name to register your Data Source under on the Hortivation Hub. Successful registration will
-download a Data Source credential `.json` file. This file is used to enable communication with the rest of the Hub.
+```bash
+PUBLIC_IP=$$(dig +short myip.opendns.com @resolver1.opendns.com)
+docker run \
+  -v ${PWD}:/data \
+  -v PATH_TO_YOUR_DATASOURCE_CREDENTIAL_JSON_FILE:/run/secrets/credentials/datasource-credentials.json \
+  -e HUB_PORTAL='https://hub.hortivation.cloud' \
+  sobolt/hortivation-hub-datasource-init \
+  python main.py --ip ${PUBLIC_IP} -o /data/.env
+```
 
 ## 2. Prepare the files
 To run a data source, it is required that the following 4 elements are within your working directory:
