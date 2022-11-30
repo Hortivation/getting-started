@@ -33,7 +33,7 @@ If you want to use your own domain name, type it into the *Hostnaam* field. It i
 the IP address of your datasource server with the commands below. Your datasource will then be reachable at `ORGANIZATION_NAME.DATASOURCE_NAME.hortivation.cloud`.
 
 ```bash
-PUBLIC_IP=$$(dig +short myip.opendns.com @resolver1.opendns.com)
+PUBLIC_IP=$(dig +short myip.opendns.com @resolver1.opendns.com)
 docker run \
   -v ${PWD}:/data \
   -v PATH_TO_YOUR_DATASOURCE_CREDENTIAL_JSON_FILE:/run/secrets/credentials/datasource-credentials.json \
