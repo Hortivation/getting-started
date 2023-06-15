@@ -40,11 +40,12 @@ the IP address of your datasource server with the commands below. Your datasourc
 
 To run a data source, it is required that the following 4 elements are within your working directory:
 
-- `docker-compose.yaml` which contains the configuration of all services that
+- `docker-compose.yaml` file which contains the configuration of all services that
   are required to run the data source.
 - `datasets` directory which contains CGO-compliant data files.
 - `datasource_description.yaml` which contains the description of your dataset
 - Data Source credential .json file, which you just downloaded when creating the Data Source on the Hub Portal
+- `.env` file containing the `HOSTNAME` variable that is set to the hostname of your datasource (see step 3 in case you use a hostname from hortivation)
 
 The easiest way to prepare the files is to:
 
@@ -129,14 +130,15 @@ docker run -it --rm \
   python main.py --ip ${PUBLIC_IP} -o /data/.env
 ```
 
-After the command is executed, your ip is registered with Hortivation Hub and you can proceed to starting up your Data Source.
+After the command is executed, your ip is registered with Hortivation Hub and you will find a `.env` file in your working directory that should be used to start up your data source.
 
 ## 4. Start up your Data Source
 
 Once all files are in place, you can start you Data Source using the following command
 
 ```bash
-docker-compose up -d
+docker-compose -f docker-compose.yaml --env-file .env pull
+docker-compose -f docker-compose.yaml --env-file .env up -d --no-build
 ```
 
 It can take a couple of minutes before the dataset(s) are online. After waiting, you can view your Data Source [here](https://hub.hortivation.cloud/mijn-datasets) on the Hub Portal. If the status is **Online**, you have succesfully setup your Data Source!
