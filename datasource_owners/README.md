@@ -314,7 +314,7 @@ To use an XML file, follow the instructions specified in the previous section: `
 
 ### B.2 XML Format
 
-The default XML template can be found in here `datasets/dataset1/data.xml`. You can replace the `data.xml` file with your own `.xml` file.
+The default XML template can be found as [data.xml](./datasets/dataset1/data.xml). You can replace the `data.xml` file with your own `.xml` file.
 
 Your XML file only needs to specify the tags that are relevant to your data. If you require a different XML format, please communicate with the Hortivation team.
 
