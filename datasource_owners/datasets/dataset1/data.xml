@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<Greenhouse>
+		<cgo_hasClient>client name</cgo_hasClient>
+		<cgo_hasConstructionStart>2000-01-01T00:00:00</cgo_hasConstructionStart>
+		<cgo_hasIdentificationCode>GH0001-1234</cgo_hasIdentificationCode>
+		<cgo_hasConstructionAddress>WestLand</cgo_hasConstructionAddress>
+		<cgo_hasConstructionPlaceName>Netherlands</cgo_hasConstructionPlaceName>
+		<cgo_hasOrientation>0.0</cgo_hasOrientation>
+		<rdfs_comment>This is a sample greenhouse in The Netherlands</rdfs_comment>
+		<cgo_hasBayWidth>4</cgo_hasBayWidth>
+		<cgo_hasNumberOfBaysPerSpan>2</cgo_hasNumberOfBaysPerSpan>
+		<cgo_hasNumberOfSpans>20</cgo_hasNumberOfSpans>
+		<cgo_hasSectionLength>4.5</cgo_hasSectionLength>
+		<cgo_hasEndSectionLength>4.5</cgo_hasEndSectionLength>
+		<cgo_hasPathSectionLength>4.5</cgo_hasPathSectionLength>
+		<cgo_hasLength>100</cgo_hasLength>
+		<cgo_hasColumnHeight>4</cgo_hasColumnHeight>
+	</Greenhouse>
+	<Site>
+		<cgo_hasLongitude>4.2175</cgo_hasLongitude>
+		<cgo_hasLatitude>51.9992</cgo_hasLatitude>
+		<cgo_hasAltitude>0</cgo_hasAltitude>
+		<cgo_hasSoilType>cgo:SoilType_Clay_soil_pure_moderately_heavy</cgo_hasSoilType>
+		<cgo_hasGroundwaterLevelLow>-2</cgo_hasGroundwaterLevelLow>
+		<cgo_hasGroundwaterLevelHigh>-1</cgo_hasGroundwaterLevelHigh>
+		<cgo_hasConePenetrationTest>false</cgo_hasConePenetrationTest>
+		<rdfs_comment>Here goes a remark about the ground and foundation.</rdfs_comment>
+		<cgo_hasTerrainGradient>0.3</cgo_hasTerrainGradient>
+	</Site>
+	<Truss>
+		<cgo_hasHeight>300</cgo_hasHeight>
+		<cgo_hasTrussLowering>150</cgo_hasTrussLowering>
+		<cgo_hasWeight>600</cgo_hasWeight>
+	</Truss>
+	<PerimeterFoundation>
+		<cgo_hasFoundationHeight>300</cgo_hasFoundationHeight>
+		<cgo_hasTypeName>On piles</cgo_hasTypeName>
+	</PerimeterFoundation>
+	<Roof>
+		<cgo_hasAngle>22</cgo_hasAngle>
+		<cgo_hasCladdingMaterial>cgo:CladdingMaterial_Single_layer_soda_lime</cgo_hasCladdingMaterial>
+		<cgo_hasArealWeight>130</cgo_hasArealWeight>
+	</Roof>
+	<InnerfieldGlassPane>
+		<cgo_hasNominalGlassWidth>1125</cgo_hasNominalGlassWidth>
+	</InnerfieldGlassPane>
+	<EndZoneGlassPane>
+		<cgo_hasNominalGlassWidth>563</cgo_hasNominalGlassWidth>
+	</EndZoneGlassPane>
+	<GableEndGlassPane>
+		<cgo_hasNominalGlassWidth>800</cgo_hasNominalGlassWidth>
+	</GableEndGlassPane>
+	<SideWallGlassPane>
+		<cgo_hasNominalGlassWidth>750</cgo_hasNominalGlassWidth>
+	</SideWallGlassPane>
+	<GreenhouseConstruction>
+		<rdfs_comment>Here goes a remark about the construction.</rdfs_comment>
+		<cgo_hasNumberOfBayPartitions>10</cgo_hasNumberOfBayPartitions>
+		<cgo_hasLengthOfPartitionBeneathGutter>50</cgo_hasLengthOfPartitionBeneathGutter>
+		<cgo_hasWindLoadReference>Loads specifications according to EN13031-1</cgo_hasWindLoadReference>
+		<cgo_hasSnowLoadReference>Loads specifications according to EN13031-1</cgo_hasSnowLoadReference>
+		<cgo_hasSnowLoadReductionByMelting>true</cgo_hasSnowLoadReductionByMelting>
+		<cgo_hasServiceLoad>70</cgo_hasServiceLoad>
+	</GreenhouseConstruction>
+	<InnerField>
+		<cgo_hasColumnHeight>4</cgo_hasColumnHeight>
+		<rdfs_comment>Here goes a remark about the innerfield.</rdfs_comment>
+	</InnerField>
+	<InnerFoundation>
+		<cgo_hasFoundationHeight>300</cgo_hasFoundationHeight>
+		<cgo_hasTypeName>Concrete</cgo_hasTypeName>
+	</InnerFoundation>
+	<Gutter>
+		<cgo_hasLinearWeight>40</cgo_hasLinearWeight>
+		<cgo_hasTypeName>name</cgo_hasTypeName>
+		<cgo_hasDrainageGradient>0.3</cgo_hasDrainageGradient>
+		<cgo_hasSlopeType>Double-sided</cgo_hasSlopeType>
+	</Gutter>
+	<GreenhouseClimate>
+		<cgo_hasMimimumInsideTemperatureDuringSnowfall>12 deg</cgo_hasMimimumInsideTemperatureDuringSnowfall>
+	</GreenhouseClimate>
+	<ScreeningSystem>
+		<cgo_hasNumberOfScreens>2</cgo_hasNumberOfScreens>
+	</ScreeningSystem>
+	<CropWiresSystem>
+		<cgo_hasCropLoadNormal>200</cgo_hasCropLoadNormal>
+		<cgo_hasCropLoadWinter>200</cgo_hasCropLoadWinter>
+		<cgo_hasSuspensionToWall>Gable end</cgo_hasSuspensionToWall>
+		<cgo_hasSuspensionPositionOnTruss>Diagonal node</cgo_hasSuspensionPositionOnTruss>
+		<cgo_hasCropWireDistance>800</cgo_hasCropWireDistance>
+		<cgo_hasCropWireLowering>550</cgo_hasCropWireLowering>
+		<cgo_hasCropWireDip>250</cgo_hasCropWireDip>
+	</CropWiresSystem>
+	<CultivationGutterSystem>
+		<cgo_hasCultivationGutterLoad>130</cgo_hasCultivationGutterLoad>
+		<cgo_hasSuspensionPositionOnTruss>Diagonal node</cgo_hasSuspensionPositionOnTruss>
+		<cgo_hasCultivationGutterDistance>800</cgo_hasCultivationGutterDistance>
+	</CultivationGutterSystem>
+	<SuspendedTransportSystem>
+		<cgo_hasTransportLoadIncidental>1250</cgo_hasTransportLoadIncidental>
+		<cgo_hasTransportLoadPermanent>0</cgo_hasTransportLoadPermanent>
+		<cgo_hasSuspensionPositionOnTruss>Diagonal node</cgo_hasSuspensionPositionOnTruss>
+		<cgo_hasNumberOfSuspensionPointsPerTruss>1</cgo_hasNumberOfSuspensionPointsPerTruss>
+	</SuspendedTransportSystem>
+	<RoofCleaner>
+		<cgo_hasMass>600</cgo_hasMass>
+		<cgo_hasWheelDistance>1500</cgo_hasWheelDistance>
+	</RoofCleaner>
+	<ServiceRail>
+		<cgo_hasMaximumServiceRailLoad>1800</cgo_hasMaximumServiceRailLoad>
+	</ServiceRail>
+	<ServicePlatform>
+		<cgo_hasMaximumServiceMass>400</cgo_hasMaximumServiceMass>
+		<cgo_hasMass>1000</cgo_hasMass>
+	</ServicePlatform>
+	<GableEnd>
+		<cgo_hasNumberOfRowsOfPurlins>3</cgo_hasNumberOfRowsOfPurlins>
+		<cgo_hasColumnGutterHingeType>Moment fixed</cgo_hasColumnGutterHingeType>
+		<cgo_hasFoundationType>Beam</cgo_hasFoundationType>
+		<cgo_hasArealWeight>130</cgo_hasArealWeight>
+		<cgo_hasPart>:CantileveredConsole</cgo_hasPart>
+		<cgo_hasIrrigationSuspension>false</cgo_hasIrrigationSuspension>
+		<cgo_hasIlluminationSuspension>false</cgo_hasIlluminationSuspension>
+	</GableEnd>
+	<CantileveredConsole>
+		<cgo_hasWeightOfPipes>250</cgo_hasWeightOfPipes>
+		<cgo_hasCantileverDistance>150</cgo_hasCantileverDistance>
+		<cgo_hasLowering>480</cgo_hasLowering>
+		<cgo_hasHoistHeatingSuspension>false</cgo_hasHoistHeatingSuspension>
+	</CantileveredConsole>
+	<SideWall>
+		<cgo_hasNumberOfRowsOfPurlins>3</cgo_hasNumberOfRowsOfPurlins>
+		<cgo_hasIntermediateColumn>true</cgo_hasIntermediateColumn>
+		<cgo_hasArealWeight>130</cgo_hasArealWeight>
+		<cgo_hasFoundationType>Beam</cgo_hasFoundationType>
+		<cgo_hasPart>:CantileveredConsole_2</cgo_hasPart>
+		<cgo_hasIrrigationSuspension>false</cgo_hasIrrigationSuspension>
+		<cgo_hasIlluminationSuspension>false</cgo_hasIlluminationSuspension>
+	</SideWall>
+	<RainWaterSystem>
+		<cgo_hasDesignRainIntensity>35</cgo_hasDesignRainIntensity>
+		<cgo_hasWaterDrainAtGableEnd>Down pipe</cgo_hasWaterDrainAtGableEnd>
+		<cgo_hasDrain>Bassin</cgo_hasDrain>
+		<cgo_hasDrainOutletLevelHeight>1</cgo_hasDrainOutletLevelHeight>
+		<cgo_emptyPumpLine>true</cgo_emptyPumpLine>
+		<cgo_hasExcavationWorksIncludedInQuotation>false</cgo_hasExcavationWorksIncludedInQuotation>
+	</RainWaterSystem>
+	<CollectionManifold>
+		<cgo_isInside>false</cgo_isInside>
+		<cgo_hasLength>25</cgo_hasLength>
+		<cgo_hasAirOutletPipes>false</cgo_hasAirOutletPipes>
+	</CollectionManifold>
+</root>
