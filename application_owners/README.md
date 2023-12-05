@@ -85,8 +85,8 @@ For those users the following sections explain how the Hub Protocol works.
 
 ### Access Tokens
 Communication to the Hub is secured using [JWT access tokens](https://jwt.io/introduction) that have to be added 
-to the Authorization Bearer header of every request. After creating a datasource in the portal you'll receive a 
-credentials file that contains the datasource UUID and a secret that are required to create and verify JWT access 
+to the Authorization Bearer header of every request. After an application is registered in the portal you'll receive a 
+credentials file that contains a datasource UUID and a secret that are required to create and verify JWT access 
 tokens. We use the [python PyJWT library](https://pyjwt.readthedocs.io/en/stable/) to create and verify these tokens. 
 See example code below to create an access token that expires after 5 minutes:
 

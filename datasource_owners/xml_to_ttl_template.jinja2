@@ -1,0 +1,88 @@
+PREFIX : <http://www.myexample.com/>
+PREFIX cgo: <http://www.tno.nl/agrifood/ontology/common-greenhouse-ontology#cgo>
+PREFIX rdfs: <http://www.tno.nl/agrifood/ontology/common-greenhouse-ontology#rdfs>
+PREFIX om: <http://www.tno.nl/agrifood/ontology/common-greenhouse-ontology#om>
+PREFIX rdf: <http://www.tno.nl/agrifood/ontology/common-greenhouse-ontology#rdf>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX sosa: <http://www.w3.org/ns/sosa/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+:Greenhouse
+  rdf:type cgo:VenloGreenhouse ;
+  cgo:hasClient "{{ data.root['cgo:hasClient'] }}" ;
+  cgo:hasConstructionStart "{{ data.root['cgo:hasConstructionStart'] }}"^^xsd:dateTime ;
+  cgo:hasIdentificationCode "{{ data.root['cgo:hasIdentificationCode'] }}" ;
+  cgo:hasConstructionAddress "{{ data.root['cgo:hasConstructionAddress'] }}" ;
+  cgo:hasConstructionPlaceName "{{ data.root['cgo:hasConstructionPlaceName'] }}" ;
+  {%- if data.root['cgo:hasOrientation'] -%}
+  cgo:hasOrientation [
+    rdf:type om:Measure ;
+    om:hasNumericalValue {{ data.root['cgo:hasOrientation'] }} ;
+    om:hasUnit om:degree ;
+  ] ;
+  {% endif %}
+  rdfs:comment "{{ data.root['rdfs:comment'] }}" ;
+  cgo:hasBayWidth [
+    rdf:type om:Width ;
+    om:hasValue [
+      rdf:type om:Measure ;
+      om:hasNumericalValue "{{ data.root['cgo:hasBayWidth'] }}"^^xsd:decimal ;
+      om:hasUnit om:metre ;
+    ] ;
+  ] ;
+  cgo:hasNumberOfBaysPerSpan [
+    rdf:type om:Number ;
+    om:hasValue [
+      rdf:type om:Measure ;
+      om:hasNumericalValue "{{ data.root['cgo:hasNumberOfBaysPerSpan'] }}"^^xsd:decimal ;
+      om:hasUnit om:one ;
+    ] ;
+  ] ;
+  cgo:hasNumberOfSpans [
+    rdf:type om:Number ;
+    om:hasValue [
+      rdf:type om:Measure ;
+      om:hasNumericalValue "{{ data.root['cgo:hasNumberOfSpans'] }}"^^xsd:decimal ;
+      om:hasUnit om:one ;
+    ] ;
+  ] ;
+  cgo:hasSectionLength [
+    rdf:type cgo:Length ;
+    om:hasValue [
+      rdf:type om:Measure ;
+      om:hasNumericalValue "{{ data.root['cgo:hasSectionLength'] }}"^^xsd:decimal ;
+      om:hasUnit om:metre ;
+    ] ;
+  ] ;
+  cgo:hasEndSectionLength [
+    rdf:type cgo:Length ;
+    om:hasValue [
+      rdf:type om:Measure ;
+      om:hasNumericalValue "{{ data.root['cgo:hasEndSectionLength'] }}"^^xsd:decimal ;
+      om:hasUnit om:metre ;
+    ] ;
+  ] ;
+  cgo:hasPathSectionLength [
+    rdf:type cgo:Length ;
+    om:hasValue [
+      rdf:type om:Measure ;
+      om:hasNumericalValue "{{ data.root['cgo:hasPathSectionLength'] }}"^^xsd:decimal ;
+      om:hasUnit om:metre ;
+    ] ;
+  ] ;
+  cgo:hasLength [
+    rdf:type cgo:Length ;
+    om:hasValue [
+      rdf:type om:Measure ;
+      om:hasNumericalValue "{{ data.root['cgo:hasLength'] }}"^^xsd:decimal ;
+      om:hasUnit om:metre ;
+    ] ;
+  ] ;
+  cgo:hasColumnHeight [
+    rdf:type om:Height ;
+    om:hasValue [
+      rdf:type om:Measure ;
+      om:hasNumericalValue "{{ data.root['cgo:hasColumnHeight'] }}"^^xsd:decimal ;
+      om:hasUnit om:metre ;
+    ] ;
+  ] .

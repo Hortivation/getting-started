@@ -22,6 +22,9 @@ For debian/ubuntu servers don't forget to add your user to the docker group
 sudo usermod -aG docker $USER
 ```
 
+**IMPORTANT**: Incoming HTTP and HTTPS ports need to be enabled on your server, because the Hortivation Hub
+works using a pull protocol when authorized users try to access your data. 
+
 ## 1. Create your data source on the Hortivation Hub
 
 ## 1.1 The first step to serving your data on the Hortivation Hub is to login through the
@@ -311,4 +314,4 @@ docker-compose -f docker-compose-advanced.yaml pull
 
 ---
 
-Hortivation Hub Data Source - v0.1.0
+Hortivation Hub Data Source - v1.0.3
