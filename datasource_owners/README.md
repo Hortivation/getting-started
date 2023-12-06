@@ -101,7 +101,7 @@ Save the file and close the editor.
 nano datasource_description.yaml
 ```
 
-Fill in the details, making sure to put in the correct `type` (can be _file_ or _fuseki_) and `path` (the path from the working directory to your `data.ttl` file
+Fill in the details, making sure to put in the correct `type` (can be _file_, _fuseki_ or xml) and `path` (the path from the working directory to your `data.ttl` file
 
 ```yaml
 Name of your dataset:
@@ -174,17 +174,17 @@ through [https://YOUR-HOSTNAME/docs](https://my-datasource-domain/docs)
 
 ### Create datasets
 
-Currently two types of datasets are supported, these are `file` and `fuseki`. Creating and
+Currently three types of datasets are supported, these are `file`, `fuseki` and `xml`. Creating and
 editing these datasets is slightly different between the two types, essentially this comes
 down to uploading/creating an rdf data model and editing the `datasource_description.yaml`
-file. Creating `file` datasets will be further explained in this section, `fuseki` datasets
+file. Creating `file` datasets will be further explained in this section, `fuseki` and `xml` datasets
 are explained in the `Advanced` section. The datasource description yaml file contains objects
 with the following properties:
 
 - `about`: description of the dataset
 - `contact`: person to contact
 - `additional_info`: additional information about the dataset
-- `type`: One of: `file`, `fuseki`
+- `type`: One of: `file`, `fuseki`, `xml`
 - `path`: path to the dataset file or the name of the fuseki dataset
 
 Any changes to this .yaml file will also automatically be detected and updated online.
@@ -303,6 +303,20 @@ Name of your dataset:
 ```
 
 After a couple minutes you can view your Fuseki Data Source [here](https://hub.hortivation.cloud/mijn-datasets) on the Hub Portal.
+
+## B. Advanced - Using XML Datasets
+
+Not only ontology turtle files can be used, but alternative XML formats as well. We support a default format, but additional ones can be implemented upon request to the Hortivation team.
+
+### B.1 Creating the `datasource_description.yaml`
+
+To use an XML file, follow the instructions specified in the previous section: `Create datasets`. The only two differences are that the `type` specified in your `datasource_description.yaml` and the extension of the file itself should be `xml`.
+
+### B.2 XML Format
+
+The default XML template can be found as [data.xml](./datasets/dataset1/data.xml). You can replace the `data.xml` file with your own `.xml` file.
+
+Your XML file only needs to specify the tags that are relevant to your data. If you require a different XML format, please communicate with the Hortivation team.
 
 ## Updates
 
