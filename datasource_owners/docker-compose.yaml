@@ -16,7 +16,6 @@ services:
     volumes:
       - "file-data:/datasets"
       - "dataset-descriptions:/descriptions"
-      - "${XML_TO_TTL_TEMPLATE_PATH:-./xml_to_ttl_template.jinja2}:/app/xml_to_ttl_template.jinja2"
     secrets:
       - credentials
 
@@ -62,7 +61,7 @@ volumes:
     driver_opts:
       o: bind
       type: none
-      device: ./datasets
+      device: ./.datasets
 
 secrets:
   credentials:

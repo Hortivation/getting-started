@@ -45,18 +45,13 @@ To run a data source, it is required that the following 4 elements are within yo
 
 - `docker-compose.yaml` file which contains the configuration of all services that
   are required to run the data source.
-- `datasets` directory which contains CGO-compliant data files.
-- `datasource_description.yaml` which contains the description of your dataset
 - Data Source credential .json file, which you just downloaded when creating the Data Source on the Hub Portal
-- `.env` file containing the `HOSTNAME` variable that is set to the hostname of your datasource (see step 3 in case you use a hostname from hortivation)
 
 The easiest way to prepare the files is to:
 
 1. Clone the repository
-2. Place your dataset in the datasets folder
-3. Copy the credentials .json file to your working directory
-4. Edit the `docker-compose.yaml` file to include the path to the credentials file
-5. Edit the `datasource_description.yaml` with a suitable description of your dataset
+2. Copy the credentials .json file to your working directory
+3. Edit the `docker-compose.yaml` file to include the path to the credentials file
 
 ### 2.1 Clone the repository and navigate to the datasource_owners directory
 
@@ -65,11 +60,7 @@ git clone https://github.com/Hortivation/getting-started.git
 cd getting-started/datasource_owners
 ```
 
-### 2.2 Place your dataset in the `datasets` folder
-
-The template already comes with a small dataset, located here: `datasets/dataset1/data.ttl`. You can replace the `data.ttl` file with your own `.ttl` file.
-
-### 2.3 Copy the credentials .json file to your working directory
+### 2.2 Copy the credentials .json file to your working directory
 
 Place the `datasource-credentials-####.json` file in the `getting-started/datasource_owners` directory. For example you can use this scp command from your local machine to a server:
 
@@ -77,7 +68,7 @@ Place the `datasource-credentials-####.json` file in the `getting-started/dataso
 scp datasource-credentials-8b27f0b2-2993-4d15-a2d6-d6e99b23332f.json IP_OF_YOUR_SERVER:PATH_TO_YOUR_WORKING_DIRECTORY/getting-started/datasource_owners
 ```
 
-### 2.4. Edit the `docker-compose.yaml` file to include the path to your credentials file
+### 2.3 Edit the `docker-compose.yaml` file to include the path to your credentials file
 
 Copy the name of your `datasource-credentials-####.json` file and open the `docker-compose.yaml` in an editor (example uses nano).
 
@@ -95,24 +86,11 @@ secrets:
 
 Save the file and close the editor.
 
-### 2.5 Edit the `datasource_description.yaml` with a suitable description of your dataset
+## 3. Setup hostname
 
-```bash
-nano datasource_description.yaml
-```
+Make sure that the `.env` file contains the `HOSTNAME` variable that is set to the hostname of your datasource.
 
-Fill in the details, making sure to put in the correct `type` (can be _file_, _fuseki_ or xml) and `path` (the path from the working directory to your `data.ttl` file
-
-```yaml
-Name of your dataset:
-  about: Describe your dataset
-  contact: Fill in contact details (including an email)
-  additional_info: Add additional information
-  type: file # don't edit this unless following the advanced steps
-  path: /datasets/dataset1/data.ttl # path to your dataset file
-```
-
-## 3. Register your IP-address.
+### 3.1 Register hostname through Hortivation
 
 > Only perform this step if you want to receive a domain name from Hortivation and left the _Hostnaam_ field empty during registration on the hub.
 
@@ -135,6 +113,12 @@ docker run -it --rm \
 
 After the command is executed, your ip is registered with Hortivation Hub and you will find a `.env` file in your working directory that should be used to start up your data source.
 
+### 3.2 Use your own hostname
+
+> Only perform this step if you want to use your own domain name and filled in the _Hostnaam_ field during registration on the hub.
+
+Edit the `.env` file and makesure the `HOSTNAME` environment variable is set to your hostname.
+
 ## 4. Start up your Data Source
 
 Once all files are in place, you can start you Data Source using the following command
@@ -144,7 +128,7 @@ docker-compose -f docker-compose.yaml --env-file .env pull
 docker-compose -f docker-compose.yaml --env-file .env up -d --no-build
 ```
 
-It can take a couple of minutes before the dataset(s) are online. After waiting, you can view your Data Source [here](https://hub.hortivation.cloud/mijn-datasets) on the Hub Portal. If the status is **Online**, you have succesfully setup your Data Source!
+It can take a couple of seconds before the datasource is online. After waiting, you can navigate to your Data Source from [here](https://hub.hortivation.cloud/databronnen) on the Hub Portal. You should be able to create, edit and remove datasets from the datasource webpage.
 
 ## Managing your Data Source
 
@@ -184,22 +168,6 @@ with the following properties:
 - `about`: description of the dataset
 - `contact`: person to contact
 - `additional_info`: additional information about the dataset
-- `type`: One of: `file`, `fuseki`, `xml`
-- `path`: path to the dataset file or the name of the fuseki dataset
-
-Any changes to this .yaml file will also automatically be detected and updated online.
-
-### File Storage
-
-In order to create a `file` dataset you need to create a turtle (`.ttl`) file in the `datasets`
-directory. After that you have to add a yaml object to the datasource desciption file.
-
-NOTE: The `datasets` directory is mounted in the server on the `/datasets` directory. Therefore the
-`path` should be relative from that directory. Examples:
-
-1. In the `datasets` directory I have a `data.ttl` file. In this case the path should be `/datasets/data.ttl`
-2. In the `datasets` directory I have another directory called `dataset1` and in that directory a `data.ttl`
-   file. In this case the path should be `/datasets/dataset1/data.ttl`
 
 ### Data categories
 
