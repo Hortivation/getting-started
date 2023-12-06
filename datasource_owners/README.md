@@ -46,7 +46,6 @@ To run a data source, it is required that the following 4 elements are within yo
 - `docker-compose.yaml` file which contains the configuration of all services that
   are required to run the data source.
 - Data Source credential .json file, which you just downloaded when creating the Data Source on the Hub Portal
-- `.env` file containing the `HOSTNAME` variable that is set to the hostname of your datasource (see step 3 in case you use a hostname from hortivation)
 
 The easiest way to prepare the files is to:
 
@@ -88,6 +87,8 @@ secrets:
 Save the file and close the editor.
 
 ## 3. Setup hostname
+
+Make sure that the `.env` file contains the `HOSTNAME` variable that is set to the hostname of your datasource.
 
 ### 3.1 Register hostname through Hortivation
 
