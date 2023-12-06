@@ -127,7 +127,7 @@ docker-compose -f docker-compose.yaml --env-file .env pull
 docker-compose -f docker-compose.yaml --env-file .env up -d --no-build
 ```
 
-It can take a couple of minutes before the dataset(s) are online. After waiting, you can view your Data Source [here](https://hub.hortivation.cloud/mijn-datasets) on the Hub Portal. If the status is **Online**, you have succesfully setup your Data Source!
+It can take a couple of seconds before the datasource is online. After waiting, you can navigate to your Data Source from [here](https://hub.hortivation.cloud/databronnen) on the Hub Portal. You should be able to create, edit and remove datasets from the datasource webpage.
 
 ## Managing your Data Source
 
