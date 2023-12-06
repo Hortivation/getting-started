@@ -45,8 +45,6 @@ To run a data source, it is required that the following 4 elements are within yo
 
 - `docker-compose.yaml` file which contains the configuration of all services that
   are required to run the data source.
-- `datasets` directory which contains CGO-compliant data files.
-- `datasource_description.yaml` which contains the description of your dataset
 - Data Source credential .json file, which you just downloaded when creating the Data Source on the Hub Portal
 - `.env` file containing the `HOSTNAME` variable that is set to the hostname of your datasource (see step 3 in case you use a hostname from hortivation)
 
@@ -61,7 +59,6 @@ The easiest way to prepare the files is to:
 ```bash
 git clone https://github.com/Hortivation/getting-started.git
 cd getting-started/datasource_owners
-mkdir .datasets
 ```
 
 ### 2.2 Copy the credentials .json file to your working directory
@@ -90,7 +87,9 @@ secrets:
 
 Save the file and close the editor.
 
-## 3. (optional) Register your IP-address.
+## 3. Setup hostname
+
+### 3.1 Register hostname through Hortivation
 
 > Only perform this step if you want to receive a domain name from Hortivation and left the _Hostnaam_ field empty during registration on the hub.
 
@@ -112,6 +111,12 @@ docker run -it --rm \
 ```
 
 After the command is executed, your ip is registered with Hortivation Hub and you will find a `.env` file in your working directory that should be used to start up your data source.
+
+### 3.2 Use your own hostname
+
+> Only perform this step if you want to use your own domain name and filled in the _Hostnaam_ field during registration on the hub.
+
+Edit the `.env` file and makesure the `HOSTNAME` environment variable is set to your hostname.
 
 ## 4. Start up your Data Source
 
