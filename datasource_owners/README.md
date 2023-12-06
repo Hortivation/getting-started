@@ -23,7 +23,7 @@ sudo usermod -aG docker $USER
 ```
 
 **IMPORTANT**: Incoming HTTP and HTTPS ports need to be enabled on your server, because the Hortivation Hub
-works using a pull protocol when authorized users try to access your data. 
+works using a pull protocol when authorized users try to access your data.
 
 ## 1. Create your data source on the Hortivation Hub
 
@@ -67,7 +67,7 @@ cd getting-started/datasource_owners
 
 ### 2.2 Place your dataset in the `datasets` folder
 
-The template already comes with a small dataset, located here: `datasets/dataset1/data.ttl`. You can replace the `data.ttl` file with your own `.ttl` file.
+The template already comes with a small dataset, located here: [datasets/dataset1-ttl/data.ttl](./datasets/dataset1-ttl/data.ttl). You can replace the `data.ttl` file with your own `.ttl` file.
 
 ### 2.3 Copy the credentials .json file to your working directory
 
@@ -109,7 +109,7 @@ Name of your dataset:
   contact: Fill in contact details (including an email)
   additional_info: Add additional information
   type: file # don't edit this unless following the advanced steps
-  path: /datasets/dataset1/data.ttl # path to your dataset file
+  path: /datasets/dataset1-ttl/data.ttl # path to your dataset file
 ```
 
 ## 3. Register your IP-address.
@@ -199,7 +199,7 @@ NOTE: The `datasets` directory is mounted in the server on the `/datasets` direc
 
 1. In the `datasets` directory I have a `data.ttl` file. In this case the path should be `/datasets/data.ttl`
 2. In the `datasets` directory I have another directory called `dataset1` and in that directory a `data.ttl`
-   file. In this case the path should be `/datasets/dataset1/data.ttl`
+   file. In this case the path should be `/datasets/dataset1-ttl/data.ttl`
 
 ### Data categories
 
@@ -314,7 +314,16 @@ To use an XML file, follow the instructions specified in the previous section: `
 
 ### B.2 XML Format
 
-The default XML template can be found as [data.xml](./datasets/dataset1/data.xml). You can replace the `data.xml` file with your own `.xml` file.
+The default XML template can be found as [datasets/dataset1-xml/data.xml](./datasets/dataset1-xml/data.xml). In this case the `datasource_description.yaml` should be as follows:
+
+```yaml
+Name of your dataset:
+  about: Describe your dataset
+  contact: Fill in contact details (including an email)
+  additional_info: Add additional information
+  type: xml # don't edit this unless following the advanced steps
+  path: /datasets/dataset1-xml/data.xml # path to your dataset file
+```
 
 Your XML file only needs to specify the tags that are relevant to your data. If you require a different XML format, please communicate with the Hortivation team.
 
