@@ -62,7 +62,7 @@ volumes:
     driver_opts:
       o: bind
       type: none
-      device: ./datasets
+      device: ./.datasets
 
 secrets:
   credentials:

@@ -76,7 +76,7 @@ volumes:
     driver_opts:
       o: bind
       type: none
-      device: ./datasets
+      device: ./.datasets
   fuseki-data:
     driver: local
     driver_opts:
