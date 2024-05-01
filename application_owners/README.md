@@ -144,7 +144,18 @@ for scope in verified_payload['scopes']:
 ### Registering/creating datasets
 Every datasource is responsible for registering datasets to the hub. Essentially this comes down to sending a POST
 request to the API of the Hub, [documentation of the endpoint that should be used can be found here](https://hub.hortivation.cloud/api/docs#/datasource/create_dataset_datasets_post)
-THis POST request will return a uuid of the dataset, among other information. 
+This POST request will return a uuid of the dataset, among other information.
+
+A dataset can be created in either the Turtle ('.ttl') or JSON ('.json') format, with Turtle being the default. You can specify the format by including the file extension as the value for the 'file_format' key in the POST request body when creating the dataset.
+
+During the creation of a dataset, you can optionally specify a unique identifier by including a UUID as the value for the 'dataset_id' key in the POST request body.
+
+```
+{
+  "dataset_id": "c6a5fc0b-6570-410e-a10f-ae25af53a6ec",
+  "file_format": ".json" | ".ttl"
+}
+```
 
 **Important**: when you send a post request don't forget to add the access token to the Authorization Bearer header
 
